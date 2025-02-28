@@ -134,7 +134,7 @@ const page = () => {
               data-id="b92d2c"
               data-element_type="section"
               data-settings='{"background_background":"gradient"}'
-              style={{ backgroundImage: " linear-gradient(90deg, #FFFFFF 50%, #e9e9e9 50%)" }}
+              style={{ backgroundImage: " linear-gradient(90deg, #FFFFFF 50%, #1a1a1a 50%)" }}
             >
               <div className="elementor-container elementor-column-gap-default">
                 <div
@@ -769,7 +769,7 @@ const page = () => {
                   data-element_type="column"
                   data-settings='{"background_background":"classic"}'
                 >
-                  <div className="elementor-widget-wrap elementor-element-populated" style={{ backgroundColor: "#e9e9e9" }}>
+                  <div className="elementor-widget-wrap elementor-element-populated" style={{ backgroundColor: "#1a1a1a" }}>
                     <section
                       className="elementor-section elementor-inner-section elementor-element elementor-element-5abb9fe elementor-section-boxed elementor-section-height-default elementor-section-height-default"
                       data-id="5abb9fe"

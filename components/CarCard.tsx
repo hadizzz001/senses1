@@ -9,55 +9,51 @@ interface CarCardProps {
     temp: TempProps;
 }
 
-
-
 const CarCard = ({ temp }: CarCardProps) => {
     const { _id, title, price, img } = temp;
 
- 
-
     return (
+        <a href={`/product?id=${_id}`} >
+            <div className="br_grid br_grid-cols-1 supports-subgrid:br_row-span-4 supports-subgrid:br_grid-rows-[subgrid]">
+                <div className="Layout br_contents">
+                    <center>
+                        <span className="br_contents br_edition-">
+                            <div className="">
+                                <div className="initial:br_row-span-1 br_col-start-1 br_row-start-1 br_relative">
+                                    <div className="br_aspect-[1/1] sm:br_aspect-square">
+                                        <div className="br_w-full br_h-full br_relative br_flex br_items-center br_justify-center">
+                                            <img
+                                                src={img[0]}
+                                                style={{
+                                                    borderRadius: '20px',
+                                                    width: '300px',
+                                                    height: '350px',
+                                                    objectFit: 'cover'
+                                                }}
+                                            />
 
-        <div className="br_grid br_grid-cols-1 supports-subgrid:br_row-span-4 supports-subgrid:br_grid-rows-[subgrid]" >
-            <div className="Layout br_contents">
-
-                <center>
-                    <span className="br_contents br_edition-">
-                        <div className="">
-                            <div className="initial:br_row-span-1 br_col-start-1 br_row-start-1 br_relative">
-                                <div className="br_aspect-[1/1] sm:br_aspect-square">
-                                    <div className="br_w-full br_h-full br_relative br_flex br_items-center br_justify-center">
-                                        <img
-                                            className="   "
-                                            alt="Slim Sleeve - Cocoa-Java"
-                                            loading="lazy" 
-                                            src={"" + img[0]}
-                                            width={350}
-                                        />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="initial:br_row-span-1 br_col-start-1 br_row-start-2 br_px-3 group-[.centered]/tile:br_justify-center group-[.centered]/tile:br_text-center">
-                                <h3 style={{ height: "100px" }} className="br_text-base-sans-spaced br_line-clamp-2 sm:br_line-clamp-none edition:br_text-grey-500 edition:br_hidden first:edition:br_inline edition:before:br_content-['_–_'] apex:edition:br_text-grey-300">
-                                    <a
-                                        href={`/product?id=${_id}`}
-                                        className="br_text-current br_no-underline"
-                                    >
-                                        <h2>{title}</h2><br />
+                                <div className="ml-2 text-left initial:br_row-span-1 br_col-start-1 br_row-start-2 br_px-3 group-[.centered]/tile:br_justify-center group-[.centered]/tile:br_text-center">
+                                    <h3 style={{ height: "100px" }} className="br_text-base-sans-spaced br_line-clamp-2 sm:br_line-clamp-none edition:br_text-grey-500 edition:br_hidden first:edition:br_inline edition:before:br_content-['_–_'] apex:edition:br_text-grey-300">
+                                        <a
+                                            href={`/product?id=${_id}`}
+                                            className="br_text-current br_no-underline"
+                                        >
+                                            <h2 className="text-sm font-bold text-light-gray  py-1">{title}</h2>
+                                            <span className="text-left text-sm bg-gray-500  py-1 rounded">${price} USD</span>
 
-                                        <span>${price}</span>
-                                        <span
-                                            className="br_absolute br_inset-0 br_z-10"
-                                        />
-                                    </a>
-                                </h3>
+                                        </a>
+                                    </h3>
+                                </div>
                             </div>
-                        </div>
-                    </span>
-                </center>
+                        </span>
+                    </center>
+                </div>
             </div>
-        </div>
-    )
+        </a>
+    );
 }
 
-export default CarCard
+export default CarCard;

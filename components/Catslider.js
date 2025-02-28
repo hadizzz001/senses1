@@ -1,103 +1,68 @@
-import { useState, useEffect } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay } from 'swiper/modules';
-import 'swiper/css';
-import CarCard3 from './CarCard3'; // Ensure this component exists
+"use client";
 
-const YourComponent = () => {
-    const [allTemps, setAllTemps] = useState(); // Stores products per category
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
-    useEffect(() => {
-        fetchCategories();
-    }, []);
+const ResponsiveVideo = () => {
+  const [categories, setCategories] = useState([]);
+  const router = useRouter();
 
+  // Fetch categories from API and filter only the first 3
+  useEffect(() => {
     const fetchCategories = async () => {
-        try {
-            const response = await fetch('/api/category', { cache: 'no-store' });
-            if (response.ok) {
-                const data = await response.json();
-                setAllTemps(data);
-            } else {
-                console.error('Failed to fetch categories');
-            }
-        } catch (error) {
-            console.error('Error fetching categories:', error);
-        }
+      try {
+        const response = await fetch("/api/category");
+        const data = await response.json();
+        setCategories(data.slice(0, 3)); // Take only first 3 categories
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
     };
 
+    fetchCategories();
+  }, []);
 
+  // Function to render either video or image
+  const renderMedia = (category) => {
+    if (category.img[0].endsWith(".mp4")) {
+      return (
+        <video className="pic-bubble" autoPlay loop muted playsInline>
+          <source src={category.img[0]} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      );
+    }
+    return <img className="pic-bubble" src={category.img[0]} alt={category.name} />;
+  };
 
+  return (
+    <>
+      <h1 className="uppercase text-center">Our Collections</h1>
+      <div className="odd-container">
+        {/* Left Side - First Category */}
+        {categories.length > 0 && (
+          <div id="vid-jump">
+            {renderMedia(categories[0])}
+            <h3 className="pic-tagline" style={{ bottom: "15%" }}>
+              {categories[0].name}
+            </h3>
+            <button onClick={() => router.push("/search?cat="+categories[0].name)} className="pic-button-splash">Shop Now</button>
+          </div>
+        )}
 
-
-    return (
-        <div className="ProvidersIfSelectedProductMatchesFilter mt-4">
-
-            <content-block slug="product-page-wssb">
-                <div className="ProductTile-SliderContainer ProductTile-SliderContainer--YMAL">
-
-                    {allTemps && Object.keys(allTemps).length > 0 ? (
-
-                        <>
-
-                            <style dangerouslySetInnerHTML={{
-                                __html: ".ProductTile-SliderContainer--YMAL .ProductTile-SliderContainer-Title{height:auto;text-align:center; }  "
-                            }} />
-
-
-
-
-
-
-                            <div className="  ProductTile-SliderContainer ProductTile-SliderContainer--YMAL px-3" data-product-list-category="ymal-slider">
-
-                                <div className="ProductTile-SliderContainer-Title br_text-3xl-serif br_text-[#333] "   >
-                                     <h1>Our Categories</h1> 
-                                </div>
-
-                                {allTemps.length > 0 ? (
-                                    <section className=' mb-5' style={{ maxWidth: "100%" }}>
-                                        <Swiper
-                                            spaceBetween={5}
-                                            modules={[Autoplay]}
-                                            autoplay={{
-                                                delay: 3000,
-                                                disableOnInteraction: false,
-                                            }} loop breakpoints={{
-                                                150: {
-                                                    slidesPerView: 2,
-                                                },
-                                                768: {
-                                                    slidesPerView: 3,
-                                                },
-                                            }}>
-                                            <div className="home__cars-wrapper">
-                                                {allTemps.map((temp) => (
-                                                    <SwiperSlide key={temp.id}>
-                                                        <CarCard3 temp={temp} />
-                                                    </SwiperSlide>
-                                                ))}
-                                            </div>
-                                        </Swiper>
-                                    </section>
-
-
-
-                                ) : (
-                                    <p>No products available in {category}</p>
-                                )}
-                            </div>
-                        </>
-
-                    ) : (
-                        <div className="home___error-container">
-                            <h2 className="text-black text-xl font-bold">No products available</h2>
-                        </div>
-                    )}
-                </div>
-
-            </content-block>
+        {/* Right Side - Remaining Two Categories */}
+        <div id="pic-portal">
+          {categories.slice(1).map((category, index) => (
+            <div key={index} className="pic-dream">
+              {renderMedia(category)}
+              <h3 className="pic-tagline">{category.name}</h3>
+              <button onClick={() => router.push("/search?cat="+category.name)} className="pic-button-splash">Shop Now</button>
+            </div>
+          ))}
         </div>
-    );
+      </div>
+    </>
+  );
 };
 
-export default YourComponent;
+export default ResponsiveVideo;

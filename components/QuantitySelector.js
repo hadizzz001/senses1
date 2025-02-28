@@ -17,9 +17,9 @@ const QuantitySelector = ({ initialQty = 1, onChange }) => {
 
   return (
     <div className="quantity-selector">
-      <button type="button" onClick={handleDecrement} style={{width: "20px",backgroundColor: "#fff",marginRight: "5px",fontWeight:" 900"}}>-</button>
-      <input type="number" value={qty} readOnly style={{ width:"30px"}} />
-      <button type="button" onClick={handleIncrement} style={{width: "20px",backgroundColor: "#fff",marginLeft: "5px",fontWeight:" 900"}}>+</button>
+      <button type="button" onClick={handleDecrement} style={{width: "20px",backgroundColor: "initial",  marginRight: "5px",fontWeight:" 900"}}>-</button>
+      <input type="number" value={qty} readOnly style={{ width:"30px" , color: "initial"}} />
+      <button type="button" onClick={handleIncrement} style={{width: "20px",backgroundColor: "initial",  marginLeft: "5px",fontWeight:" 900"}}>+</button>
     </div>
   );
 };

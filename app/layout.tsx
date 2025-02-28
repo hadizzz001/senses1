@@ -116,7 +116,8 @@ export default function RootLayout({
 <link href="https://fonts.cdnfonts.com/css/lato" rel="stylesheet"/> 
  
 
-<link href="https://fonts.cdnfonts.com/css/i-inspiring-angel" rel="stylesheet"/>
+<link href="https://fonts.cdnfonts.com/css/futura-std-4" rel="stylesheet"/>
+                
                 
                 
                 

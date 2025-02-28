@@ -3,10 +3,11 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import CarCard from './CarCard'; // Ensure this component exists
+import { useRouter } from "next/navigation";
 
 const YourComponent = () => {
     const [allTemps, setAllTemps] = useState(); // Stores products per category
-
+    const router = useRouter();
     useEffect(() => {
         fetchCategories();
     }, []);
@@ -50,24 +51,35 @@ const YourComponent = () => {
 
                             <div className="  ProductTile-SliderContainer ProductTile-SliderContainer--YMAL px-3" data-product-list-category="ymal-slider">
 
-                                <div className="ProductTile-SliderContainer-Title br_text-3xl-serif br_text-[#333] " >
-                                   <h1>New Arrivals</h1> 
+                                <div className="flex items-center justify-between w-full">
+                                    <h1 className="py-2 leading-[0rem] font-stretch-[66.66%] not-italic tracking-widest uppercase text-white transition text-nowrap font-bold text-3xl">
+                                        New Arrivals
+                                    </h1>
+                                    <button
+                                    id='mybbtn'  
+                                    onClick={() => router.push("/search?cat=yes")}
+                                    >
+                                        Shop All
+                                    </button>
                                 </div>
+                                <div className="w-[70px] h-[5px] bg-[#ff99ff] mt-1 mb-5"></div>
+
+
+
+
+
 
                                 {allTemps.length > 0 ? (
                                     <section className=' mb-5' style={{ maxWidth: "100%" }}>
                                         <Swiper
-                                            spaceBetween={5}
-                                            modules={[Autoplay]}
-                                            autoplay={{
-                                                delay: 3000,
-                                                disableOnInteraction: false,
-                                            }} loop breakpoints={{
+                                            spaceBetween={20}
+
+                                            loop breakpoints={{
                                                 150: {
                                                     slidesPerView: 2,
                                                 },
                                                 768: {
-                                                    slidesPerView: 3,
+                                                    slidesPerView: 4,
                                                 },
                                             }}>
                                             <div className="home__cars-wrapper">

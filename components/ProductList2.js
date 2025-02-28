@@ -51,7 +51,7 @@ const YourComponent = () => {
                                 __html: ".ProductTile-SliderContainer--YMAL .ProductTile-SliderContainer-Title{height:auto;text-align:center; }"
                             }} />
                             <div className="ProductTile-SliderContainer px-3">
-                                <div className="ProductTile-SliderContainer-Title br_text-3xl-serif br_text-[#333]"
+                                <div className="ProductTile-SliderContainer-Title br_text-3xl-serif br_text-white"
                                     style={{ textAlign: "left", fontSize: "1.3em", fontWeight: "bold", fontFamily: 'Manrope' }}>
                                     {/* {allTemps1 ? (
                                         <>

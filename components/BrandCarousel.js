@@ -31,7 +31,7 @@ const YourComponent = () => {
           __html: ".ProductTile-SliderContainer--YMAL .ProductTile-SliderContainer-Title{height:auto;text-align:center;padding-bottom:10px} "
         }} />
         <div className="ProductTile-SliderContainer ProductTile-SliderContainer--YMAL px-3" data-product-list-category="ymal-slider">
-          <div className="ProductTile-SliderContainer-Title br_text-3xl-serif br_text-[#333] " style={{ textAlign: "left", textAlign: "left", fontSize: "1.3em", fontWeight: "bold", fontFamily: 'Manrope' }}>
+          <div className="ProductTile-SliderContainer-Title br_text-3xl-serif br_text-white " style={{ textAlign: "left", textAlign: "left", fontSize: "1.3em", fontWeight: "bold", fontFamily: 'Manrope' }}>
             Our brands
             <span style={{ position: "absolute", right: "1em" }}><svg
               fill="#000000"

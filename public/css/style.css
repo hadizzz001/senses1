@@ -9666,7 +9666,7 @@ form.register .input-submit~span.lost_password a {
 }
 
 .woocommerce-MyAccount-navigation ul li {
-    background-color: #f8f8f8;
+    background-color: #222222;
     margin: 0;
     border-bottom: 1px solid #eaeaea;
     padding: 15px 10px 15px 20px;
