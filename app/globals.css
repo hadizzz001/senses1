@@ -602,3 +602,11 @@ h1,h2,h3 ,div, button{
     height: auto; /* Allow images to adjust to screen size */
   }
 }
+
+
+header {
+  background-color:black !important;
+}
+#filterId1 {
+  background-color:black !important;
+}
