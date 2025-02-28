@@ -610,3 +610,16 @@ header {
 #filterId1 {
   background-color:black !important;
 }
+
+@media (min-width: 1200px) {
+  @media (pointer: fine) {
+      .xl\:pointer-fine\: {
+          --tw-bg-opacity: 1;
+          background-color: transparent !important;
+      }
+  }
+}
+
+.MiniCart_Cart_Heading { 
+  background-color: black !important;
+}
