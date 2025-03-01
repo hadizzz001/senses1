@@ -62,7 +62,7 @@ const YourComponent = () => {
                                         Shop All
                                     </button>
                                 </div>
-                                <div className="w-[70px] h-[5px] bg-[#ff99ff] mt-1 mb-5"></div>
+                                <div className="w-[70px] h-[5px] bg-[#CD998E] mt-1 mb-5"></div>
 
 
 

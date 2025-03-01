@@ -26,7 +26,7 @@ export default function Home() {
           <h2 className="u-text u-text-1" style={{fontFamily: '"Manrope", sans-serif',fontWeight: "bolder",marginBottom: "1em",fontSize: "3em"}}>About Company</h2>
           <p className="u-text u-text-2" style={{fontFamily: 'Frank Ruhl Libre, "PT Serif", "Noto Serif", "Noto Serif JP", "Noto Serif KR", "Noto Serif SC", "Noto Serif TC", ui-serif, Georgia, Cambria, Times New Roman, Times, serif',fontSize: "1.2rem",lineHeight: "2rem",fontWeight:"400"}}>
             {" "}
-            Abbasbaba is your ultimate destination for stylish shoes and more, combining comfort, quality, and trendsetting designs. We bring you a curated collection that blends fashion with functionality, ensuring you step out in confidence every day. Whether you're looking for classic footwear or the latest styles, Abbasbaba has something for everyone.
+            Senses is your ultimate destination for stylish shoes and more, combining comfort, quality, and trendsetting designs. We bring you a curated collection that blends fashion with functionality, ensuring you step out in confidence every day. Whether you're looking for classic footwear or the latest styles, Abbasbaba has something for everyone.
           </p>
  
         </div>
@@ -38,7 +38,8 @@ export default function Home() {
               <div className="u-container-layout u-valign-top u-container-layout-2">
                 <a
                   href="contact"
-                  className="u-active-palette-2-base u-border-2 u-border-palette-2-base u-btn u-btn-round u-button-style u-hover-palette-2-base u-none u-radius-50 u-text-active-white u-text-body-color u-text-hover-white u-btn-2"
+                  className="u-active-white u-border-2 u-border-active-palette-2-base u-border-hover-palette-2-base u-border-palette-2-base u-btn u-btn-round u-button-style u-hover-white u-palette-2-base u-radius-50 u-text-active-black u-text-hover-black u-btn-3"
+                 
                 >
                   Contact Us
                   <br />
@@ -78,13 +79,13 @@ export default function Home() {
   <style
     dangerouslySetInnerHTML={{
       __html:
-        ".u-disable-duration * {transition-duration: 0s !important;}.u-section-1 {\n    background-image: url(https://res.cloudinary.com/duppvjinz/image/upload/v1715626760/gp7ivqfzlaeav793jvmh.png);\n    background-position: 50% 50%;\n}"
+        ".u-disable-duration * {transition-duration: 0s !important;}.u-section-1 {\n     \n}"
     }}
   />
   <style
   dangerouslySetInnerHTML={{
     __html:
-      "\n  .u-section-1 .u-image-1 {\n    border-color: #ff99ff !important;\n    width: 170px;\n    height: 170px;\n    margin: 0 auto;\n}\n"
+      "\n  .u-section-1 .u-image-1 {\n    border-color: #CD998E !important;\n    width: 170px;\n    height: 170px;\n    margin: 0 auto;\n}\n"
   }}
 />
 

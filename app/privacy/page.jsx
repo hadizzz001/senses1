@@ -88,13 +88,13 @@ export default function Home() {
                 <style
                     dangerouslySetInnerHTML={{
                         __html:
-                            ".u-disable-duration * {transition-duration: 0s !important;}.u-section-1 {\n    background-image: url(https://res.cloudinary.com/duppvjinz/image/upload/v1715626760/gp7ivqfzlaeav793jvmh.png);\n    background-position: 50% 50%;\n}"
+                            ".u-disable-duration * {transition-duration: 0s !important;}.u-section-1 {\n     \n}"
                     }}
                 />
                 <style
                     dangerouslySetInnerHTML={{
                         __html:
-                            "\n  .u-section-1 .u-image-1 {\n    border-color: #ff99ff !important;\n    width: 170px;\n    height: 170px;\n    margin: 0 auto;\n}\n"
+                            "\n  .u-section-1 .u-image-1 {\n    border-color: #CD998E !important;\n    width: 170px;\n    height: 170px;\n    margin: 0 auto;\n}\n"
                     }}
                 />
 

@@ -41,14 +41,14 @@ export default function RootLayout({
     content="At Senses, we're reshaping the way businesses connect."
     name="description" 
   />
-  <meta content="Senses" name="keywords" property="abbasbaba, shoes, men, women" />
+  <meta content="Senses" name="keywords" property="sensesbynature, senses, men, women" />
   <meta
     content="Senses"
     name=""
     property="og:title"
   />
   <meta
-    content="https://abbasbaba.com/"
+    content="https://sensesbynature.com/"
     name=""
     property="og:url"
   />

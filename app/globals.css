@@ -13,7 +13,7 @@
 }
 
 body {
-  background-color: #1a1a1a !important;
+  background-color: #0E3530 !important;
 }
 
 /* START: General styles */
@@ -93,30 +93,30 @@ body {
 
 
 .sywVideo {
-  color: #231f20 !important;
+  color: #0E3530 !important;
   background-color: transparent !important;
 }
 
 .sywCarousel {
-  color: #231f20 !important;
+  color: #0E3530 !important;
 }
 
 .sywProductTabs-title {
-  color: #231f20 !important;
+  color: #0E3530 !important;
   background-color: transparent !important;
 }
 
 .sywPaymentOptions {
-  color: #231f20 !important;
+  color: #0E3530 !important;
 }
 
 .SiteFooter__wrapper {
-  background: #231f20 !important;
+  background: #0E3530 !important;
 }
 
 
 a:hover {
-  color: #ff99ff !important;
+  color: #CD998E !important;
   text-decoration: none;
 }
 
@@ -127,7 +127,7 @@ a:hover {
 
 .syw-cta-desktop:hover,
 .syw-cta-desktop:focus {
-  color: #231f20 !important;
+  color: #0E3530 !important;
   text-decoration: none;
 }
 
@@ -142,7 +142,7 @@ a:hover {
   font-family: "Lato", sans-serif;
   font-size: 12px;
   font-weight: 700;
-  background: #ff99ff;
+  background: #CD998E;
   text-align: center;
   padding: 0 5px;
   min-width: 100%;
@@ -174,7 +174,7 @@ a:hover {
 
 @media (max-width: 2300px) and (max-height: 900px) {
   #PageMenuPreHeader {
-    background-color: #231f20
+    background-color: #0E3530
   }
 }
 
@@ -240,7 +240,7 @@ a:hover {
 
 
 #anchorNew:hover {
-  color: #231f20 !important;
+  color: #0E3530 !important;
 }
 
 .form-control {
@@ -269,7 +269,7 @@ a:hover {
 
 
 .HtmlProductAddToCart {
-  background-color: #ff99ff !important;
+  background-color: #CD998E !important;
 }
 
 button:focus {
@@ -447,9 +447,9 @@ h1,h2,h3 ,div, button{
 
 
 #mybbtn{
-  border-color: #ff99ff !important;
+  border-color: #CD998E !important;
   padding: 8px 20px;
-  border: 2px solid #ff99ff;
+  border: 2px solid #CD998E;
   border-radius: 10px;
   font-size: 18px;
   font-weight: bold;
@@ -517,7 +517,7 @@ h1,h2,h3 ,div, button{
  
 
 #vid-action-push:hover {
-  background-color: #ff66cc;
+  background-color: #CD998E;
 }
 
 /* Image container with a weird id */
@@ -563,11 +563,11 @@ h1,h2,h3 ,div, button{
   bottom: 4%;
   left: 10%; /* Align button to the left */
   transform: translateX(0);
-  background-color: #ff99ff; 
+  background-color: #CD998E; 
   transition: background-color 0.3s ease; 
-  border-color: #ff99ff !important;
+  border-color: #CD998E !important;
   padding: 8px 20px;
-  border: 2px solid #ff99ff;
+  border: 2px solid #CD998E;
   border-radius: 10px;
   font-size: 18px;
   font-weight: bold;
@@ -580,7 +580,7 @@ h1,h2,h3 ,div, button{
 }
 
 .pic-button-splash:hover {
-  background-color: #ff66cc;
+  background-color: #CD998E;
 }
 
 /* For mobile responsiveness */
@@ -605,10 +605,10 @@ h1,h2,h3 ,div, button{
 
 
 header {
-  background-color:black !important;
+  background-color:#0E3530 !important;
 }
 #filterId1 {
-  background-color:black !important;
+  background-color:#0E3530 !important;
 }
 
 @media (min-width: 1200px) {
@@ -621,5 +621,15 @@ header {
 }
 
 .MiniCart_Cart_Heading { 
-  background-color: black !important;
+  background-color: #0E3530 !important;
 }
+
+#sec-9a83{
+  background-color: #0E3530 !important;
+}
+
+.u-section-1 {
+  background-color: #0E3530 !important;
+}
+
+ 

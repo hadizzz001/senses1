@@ -155,24 +155,12 @@ const Body = () => {
                                                                 </a>
                                                             </h3>
                                                             <div className="br_text-base-sans-bold-spaced br_text-white br_inline-flex br_flex-wrap br_gap-x-2 br_items-baseline apex:br_text-white group-[.centered]/tile:br_justify-center">
-                                                                {item.category}
-                                                            </div>
-                                                            <br />
-                                                            <div className="br_text-base-sans-bold-spaced br_text-white br_inline-flex br_flex-wrap br_gap-x-2 br_items-baseline apex:br_text-white group-[.centered]/tile:br_justify-center">
-                                                                {item.type}
-                                                            </div>
+                                                                ${item.price}
+                                                            </div> 
                                                             <br />
                                                           
 
-
-                                                            {!isCodeValid ? (
-                                                                <span></span>
-                                                            ) : (
-                                                                <div className="br_text-base-sans-bold-spaced br_text-white br_inline-flex br_flex-wrap br_gap-x-2 br_items-baseline apex:br_text-white group-[.centered]/tile:br_justify-center">
-                                                                    ${item.price}
-                                                                </div>
-                                                            )}
-
+ 
 
 
 

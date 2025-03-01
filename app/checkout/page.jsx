@@ -134,7 +134,7 @@ const page = () => {
               data-id="b92d2c"
               data-element_type="section"
               data-settings='{"background_background":"gradient"}'
-              style={{ backgroundImage: " linear-gradient(90deg, #FFFFFF 50%, #1a1a1a 50%)" }}
+              style={{ backgroundImage: " linear-gradient(90deg, #FFFFFF 50%, #0E3530 50%)" }}
             >
               <div className="elementor-container elementor-column-gap-default">
                 <div
@@ -636,7 +636,7 @@ const page = () => {
                                     <span className="elementor-icon-list-icon">
                                       <FontAwesomeIcon
                                         icon={faCheckCircle}
-                                        style={{ color: '#ff99ff', marginLeft: '10px' }}
+                                        style={{ color: '#CD998E', marginLeft: '10px' }}
                                       />
                                     </span>
                                     <span className="elementor-icon-list-text">
@@ -668,7 +668,7 @@ const page = () => {
                                     <span className="elementor-icon-list-icon">
                                       <FontAwesomeIcon
                                         icon={faCheckCircle}
-                                        style={{ color: '#ff99ff', marginLeft: '10px' }}
+                                        style={{ color: '#CD998E', marginLeft: '10px' }}
                                       />
                                     </span>
                                     <span className="elementor-icon-list-text">
@@ -769,7 +769,7 @@ const page = () => {
                   data-element_type="column"
                   data-settings='{"background_background":"classic"}'
                 >
-                  <div className="elementor-widget-wrap elementor-element-populated" style={{ backgroundColor: "#1a1a1a" }}>
+                  <div className="elementor-widget-wrap elementor-element-populated" style={{ backgroundColor: "#0E3530" }}>
                     <section
                       className="elementor-section elementor-inner-section elementor-element elementor-element-5abb9fe elementor-section-boxed elementor-section-height-default elementor-section-height-default"
                       data-id="5abb9fe"
@@ -836,7 +836,7 @@ const page = () => {
                             <span className="elementor-icon-list-icon">
                               <FontAwesomeIcon
                                 icon={faCheckCircle}
-                                style={{ color: '#ff99ff', marginLeft: '10px' }}
+                                style={{ color: '#CD998E', marginLeft: '10px' }}
                               />
                             </span>
                             <span className="elementor-icon-list-text">
@@ -847,7 +847,7 @@ const page = () => {
                             <span className="elementor-icon-list-icon">
                               <FontAwesomeIcon
                                 icon={faCheckCircle}
-                                style={{ color: '#ff99ff', marginLeft: '10px' }}
+                                style={{ color: '#CD998E', marginLeft: '10px' }}
                               />
                             </span>
                             <span className="elementor-icon-list-text">
@@ -858,7 +858,7 @@ const page = () => {
                             <span className="elementor-icon-list-icon">
                               <FontAwesomeIcon
                                 icon={faCheckCircle}
-                                style={{ color: '#ff99ff', marginLeft: '10px' }}
+                                style={{ color: '#CD998E', marginLeft: '10px' }}
                               />
                             </span>
                             <span className="elementor-icon-list-text">
@@ -869,7 +869,7 @@ const page = () => {
                             <span className="elementor-icon-list-icon">
                               <FontAwesomeIcon
                                 icon={faCheckCircle}
-                                style={{ color: '#ff99ff', marginLeft: '10px' }}
+                                style={{ color: '#CD998E', marginLeft: '10px' }}
                               />
                             </span>
                             <span className="elementor-icon-list-text">
@@ -891,16 +891,7 @@ const page = () => {
                         </div>
                       </div>
                     </div>
-                    <div
-                      className="elementor-element elementor-element-412bf62f elementor-widget elementor-widget-text-editor"
-                      data-id="412bf62f"
-                      data-element_type="widget"
-                      data-widget_type="text-editor.default"
-                    >
-                      <div className="elementor-widget-container">
-                        <p>Happy Customers</p>{" "}
-                      </div>
-                    </div>
+               
 
 
 
@@ -908,132 +899,7 @@ const page = () => {
 
 
 
-
-                    {allTemp && allTemp?.length > 0 ? (
-
-                      allTemp.map((post) => (
-                        <>
-                          <section
-                            className="elementor-section elementor-inner-section elementor-element elementor-element-77655209 elementor-section-content-middle elementor-section-boxed elementor-section-height-default elementor-section-height-default"
-                            data-id={77655209}
-                            data-element_type="section"
-                          >
-                            <div className="elementor-container elementor-column-gap-default">
-                              <div
-                                className="elementor-column elementor-col-50 elementor-inner-column elementor-element elementor-element-59ece028"
-                                data-id="59ece028"
-                                data-element_type="column"
-                              >
-                                <div className="elementor-widget-wrap elementor-element-populated">
-                                  <div
-                                    className="elementor-element elementor-element-444daeda elementor-widget elementor-widget-testimonial"
-                                    data-id="444daeda"
-                                    data-element_type="widget"
-                                    data-widget_type="testimonial.default"
-                                  >
-                                    <div className="elementor-widget-container">
-                                      <style
-                                        dangerouslySetInnerHTML={{
-                                          __html:
-                                            "/*! elementor - v3.20.0 - 26-03-2024 */\n.elementor-testimonial-wrapper{overflow:hidden;text-align:center}.elementor-testimonial-wrapper .elementor-testimonial-content{font-size:1.3em;margin-bottom:20px}.elementor-testimonial-wrapper .elementor-testimonial-name{line-height:1.5;display:block}.elementor-testimonial-wrapper .elementor-testimonial-job{font-size:.85em;display:block}.elementor-testimonial-wrapper .elementor-testimonial-meta{width:100%;line-height:1}.elementor-testimonial-wrapper .elementor-testimonial-meta-inner{display:inline-block}.elementor-testimonial-wrapper .elementor-testimonial-meta .elementor-testimonial-details,.elementor-testimonial-wrapper .elementor-testimonial-meta .elementor-testimonial-image{display:table-cell;vertical-align:middle}.elementor-testimonial-wrapper .elementor-testimonial-meta .elementor-testimonial-image img{width:60px;height:60px;border-radius:50%;-o-object-fit:cover;object-fit:cover;max-width:none}.elementor-testimonial-wrapper .elementor-testimonial-meta.elementor-testimonial-image-position-aside .elementor-testimonial-image{padding-right:15px}.elementor-testimonial-wrapper .elementor-testimonial-meta.elementor-testimonial-image-position-aside .elementor-testimonial-details{text-align:left}.elementor-testimonial-wrapper .elementor-testimonial-meta.elementor-testimonial-image-position-top .elementor-testimonial-details,.elementor-testimonial-wrapper .elementor-testimonial-meta.elementor-testimonial-image-position-top .elementor-testimonial-image{display:block}.elementor-testimonial-wrapper .elementor-testimonial-meta.elementor-testimonial-image-position-top .elementor-testimonial-image{margin-bottom:20px}"
-                                        }}
-                                      />{" "}
-                                      <div className="elementor-testimonial-wrapper">
-                                        <div className="elementor-testimonial-meta">
-                                          <div className="elementor-testimonial-meta-inner">
-                                            <div className="elementor-testimonial-details">
-                                              <div className="elementor-testimonial-name">
-                                                {post.name}
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div
-                                className="elementor-column elementor-col-50 elementor-inner-column elementor-element elementor-element-7011aeb8"
-                                data-id="7011aeb8"
-                                data-element_type="column"
-                              >
-                                <div className="elementor-widget-wrap elementor-element-populated">
-                                  <div
-                                    className="elementor-element elementor-element-687cdb0f elementor--star-style-star_unicode elementor-star-rating--align-right elementor-star-rating-tablet--align-center elementor-widget elementor-widget-star-rating"
-                                    data-id="687cdb0f"
-                                    data-element_type="widget"
-                                    data-widget_type="star-rating.default"
-                                  >
-                                    <div className="elementor-widget-container">
-                                      <style
-                                        dangerouslySetInnerHTML={{
-                                          __html:
-                                            '/*! elementor - v3.20.0 - 26-03-2024 */\n@charset "UTF-8";.elementor-star-rating{color:#ccd6df;font-family:eicons;display:inline-block}.elementor-star-rating i{display:inline-block;position:relative;font-style:normal;cursor:default}.elementor-star-rating i:before{content:"\\e934";display:block;font-size:inherit;font-family:inherit;position:absolute;overflow:hidden;color:#f0ad4e;top:0;left:0}.elementor-star-rating .elementor-star-empty:before{content:none}.elementor-star-rating .elementor-star-1:before{width:10%}.elementor-star-rating .elementor-star-2:before{width:20%}.elementor-star-rating .elementor-star-3:before{width:30%}.elementor-star-rating .elementor-star-4:before{width:40%}.elementor-star-rating .elementor-star-5:before{width:50%}.elementor-star-rating .elementor-star-6:before{width:60%}.elementor-star-rating .elementor-star-7:before{width:70%}.elementor-star-rating .elementor-star-8:before{width:80%}.elementor-star-rating .elementor-star-9:before{width:90%}.elementor-star-rating__wrapper{display:flex;align-items:center}.elementor-star-rating__title{margin-right:10px}.elementor-star-rating--align-right .elementor-star-rating__wrapper{text-align:right;justify-content:flex-end}.elementor-star-rating--align-left .elementor-star-rating__wrapper{text-align:left;justify-content:flex-start}.elementor-star-rating--align-center .elementor-star-rating__wrapper{text-align:center;justify-content:center}.elementor-star-rating--align-justify .elementor-star-rating__title{margin-right:auto}@media (max-width:1024px){.elementor-star-rating-tablet--align-right .elementor-star-rating__wrapper{text-align:right;justify-content:flex-end}.elementor-star-rating-tablet--align-left .elementor-star-rating__wrapper{text-align:left;justify-content:flex-start}.elementor-star-rating-tablet--align-center .elementor-star-rating__wrapper{text-align:center;justify-content:center}.elementor-star-rating-tablet--align-justify .elementor-star-rating__title{margin-right:auto}}@media (max-width:767px){.elementor-star-rating-mobile--align-right .elementor-star-rating__wrapper{text-align:right;justify-content:flex-end}.elementor-star-rating-mobile--align-left .elementor-star-rating__wrapper{text-align:left;justify-content:flex-start}.elementor-star-rating-mobile--align-center .elementor-star-rating__wrapper{text-align:center;justify-content:center}.elementor-star-rating-mobile--align-justify .elementor-star-rating__title{margin-right:auto}}.last-star{letter-spacing:0}.elementor--star-style-star_unicode .elementor-star-rating{font-family:Arial,Helvetica,sans-serif}.elementor--star-style-star_unicode .elementor-star-rating i:not(.elementor-star-empty):before{content:"★"}'
-                                        }}
-                                      />
-                                      <div className="elementor-star-rating__wrapper">
-                                        <div
-                                          className="elementor-star-rating"
-                                          title="5/5"
-                                          itemType="http://schema.org/Rating"
-                                          itemScope=""
-                                          itemProp="reviewRating"
-                                        >
-                                          <i className="elementor-star-full">★</i>
-                                          <i className="elementor-star-full">★</i>
-                                          <i className="elementor-star-full">★</i>
-                                          <i className="elementor-star-full">★</i>
-                                          <i className="elementor-star-full">★</i>{" "}
-                                          <span
-                                            itemProp="ratingValue"
-                                            className="elementor-screen-only"
-                                          >
-                                            5/5
-                                          </span>
-                                        </div>{" "}
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </section>
-                          <div
-                            className="elementor-element elementor-element-3fd62e90 elementor-widget-tablet__width-initial elementor-widget elementor-widget-text-editor"
-                            data-id="3fd62e90"
-                            data-element_type="widget"
-                            data-widget_type="text-editor.default"
-                          >
-                            <div className="elementor-widget-container">
-                              <p>
-                                <span
-                                  style={{
-                                    fontFamily: "Poppins, sans-serif",
-                                    fontSize: 15,
-                                    fontStyle: "normal",
-                                    fontVariantLigatures: "normal",
-                                    fontVariantCaps: "normal",
-                                    fontWeight: 400
-                                  }}
-                                >
-                                  {post.description}
-                                </span>
-                              </p>{" "}
-                            </div>
-                          </div>
-                        </>
-                      ))
-
-
-                    ) : (
-                      <div className='home___error-container'>
-                        <h2 className='text-black text-xl dont-bold'>...</h2>
-
-                      </div>
-                    )
-
-                    }
+ 
 
 
 
