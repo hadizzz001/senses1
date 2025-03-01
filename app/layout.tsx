@@ -59,7 +59,7 @@ export default function RootLayout({
     property="og:description"
   />
   <meta
-    content="/logo.png"
+    content="https://res.cloudinary.com/dxlfxsimy/image/upload/v1740859511/j8oeaqn4tr1mvq5fypaw.jpg"
     name=""
     property="og:image"
   />
