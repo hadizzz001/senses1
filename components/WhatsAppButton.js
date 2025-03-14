@@ -29,7 +29,7 @@ const WhatsAppButton = ({ inputs, items, total }) => {
             return;
         }
 
-        const url = createWhatsAppURL(inputs, items);
+        const url = createWhatsAppURL(inputs, items , total);
         window.open(url, '_blank');
         createOrder();
         clearCart();
@@ -55,7 +55,7 @@ const WhatsAppButton = ({ inputs, items, total }) => {
 
 export default WhatsAppButton;
 
-const createWhatsAppURL = (inputs, items, total) => {
+const createWhatsAppURL = (inputs, items, total) => { 
     const { address, fname, lname, phone , email} = inputs;
 
     // Calculate the total amount
@@ -67,7 +67,7 @@ const createWhatsAppURL = (inputs, items, total) => {
     // Formatting the message
     const message = `
     *Customer Information:*
-    Name: ${email}
+    Email: ${email}
     Name: ${fname} ${lname} 
     Phone: ${phone}
     Address: ${address}
@@ -88,5 +88,5 @@ const createWhatsAppURL = (inputs, items, total) => {
 
     const encodedMessage = encodeURIComponent(message);
     const phoneNumber = '9613581592';  
-    // return `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+    return `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
 };

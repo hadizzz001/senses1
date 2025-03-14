@@ -17,7 +17,7 @@ const page = () => {
   const [localQuantities, setLocalQuantities] = useState(quantities);
   const [phone, setPhone] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const [total, setTotal] = useState(0);
+  const [total, setTotal] = useState(null);
   const [promoCode, setPromoCode] = useState("");
   const [discountApplied, setDiscountApplied] = useState(false);
 
@@ -66,12 +66,12 @@ const page = () => {
 
   
   useEffect(() => {
-    const promoUsed = localStorage.getItem("promoUsed"); // Check promo usage
+    const promoUsed = localStorage.getItem("promoUsed"); // Check if promo code has been used
     const initialTotal = (subtotal + 4).toFixed(2);
 
     if (promoUsed) {
       setDiscountApplied(true);
-      setTotal(initialTotal); // NO discount after cart update
+      setTotal(initialTotal); // No discount applied after cart update
     } else {
       setTotal(initialTotal); // Default total if no promo used
     }
@@ -82,11 +82,12 @@ const page = () => {
       const discountedTotal = ((subtotal + 4) * 0.9).toFixed(2);
       setTotal(discountedTotal);
       setDiscountApplied(true);
-      localStorage.setItem("promoUsed", "true"); // **PERMANENTLY disable promo**
+      localStorage.setItem("promoUsed", "true"); // Store promo usage to prevent reuse
     } else {
       alert("Invalid or already used promo code!");
     }
   };
+
   
 
 
@@ -910,7 +911,9 @@ const page = () => {
                     </div>
 
 
-                    <WhatsAppButton inputs={inputs} items={cart} total={total} />
+                    {total !== null && (
+        <WhatsAppButton inputs={inputs} items={cart} total={total} />
+      )}
 
 
 
