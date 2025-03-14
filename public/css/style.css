@@ -6811,7 +6811,7 @@ html.disable-scroll {
     display: block;
     border-radius: 6px;
     overflow: hidden;
-    background-color: #0E3530;
+    background-color: #ebebd3;
 }
 
 .widget.widget_instagram .instagram-wrap .instagram_badge_image a:after,
@@ -6973,7 +6973,7 @@ html.disable-scroll {
 /* Widget: Media Gallery */
 
 .widget.widget_media_gallery .gallery-icon {
-    background-color: #0E3530;
+    background-color: #ebebd3;
     overflow: hidden;
 }
 
@@ -9666,7 +9666,7 @@ form.register .input-submit~span.lost_password a {
 }
 
 .woocommerce-MyAccount-navigation ul li {
-    background-color: #0E3530;
+    background-color: #ebebd3;
     margin: 0;
     border-bottom: 1px solid #eaeaea;
     padding: 15px 10px 15px 20px;
@@ -9681,7 +9681,7 @@ form.register .input-submit~span.lost_password a {
 }
 
 .woocommerce-MyAccount-navigation ul li li a:hover {
-    color: #CD998E;
+    color: #8ea976;
 }
 
 .woocommerce-MyAccount-navigation ul li.is-active {

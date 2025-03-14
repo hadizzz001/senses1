@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
-import CarCard from './CarCard'; // Ensure this component exists
+import CarCard6 from './CarCard6'; 
 import { useRouter } from "next/navigation";
 
 const YourComponent = () => {
@@ -14,7 +14,7 @@ const YourComponent = () => {
 
     const fetchCategories = async () => {
         try {
-            const response = await fetch('/api/products5', { cache: 'no-store' });
+            const response = await fetch('/api/subcat', { cache: 'no-store' });
             if (response.ok) {
                 const data = await response.json();
                 setAllTemps(data);
@@ -53,12 +53,12 @@ const YourComponent = () => {
 
                                 <div className="flex items-center justify-between w-full">
                                     <h1 className="py-2 leading-[0rem] font-stretch-[66.66%] not-italic tracking-widest uppercase text-[#8ea976] transition text-nowrap font-bold text-3xl myBB">
-                                        New Arrivals
+                                        Our Brand
                                     </h1>
                                     <button
                                     id='mybbtn' 
                                     className='myBB' 
-                                    onClick={() => router.push("/search?cat=yes")}
+                                    onClick={() => router.push("/shop")}
                                     >
                                         Shop All
                                     </button>
@@ -86,7 +86,7 @@ const YourComponent = () => {
                                             <div className="home__cars-wrapper">
                                                 {allTemps.map((temp) => (
                                                     <SwiperSlide key={temp.id}>
-                                                        <CarCard temp={temp} />
+                                                        <CarCard6 temp={temp} />
                                                     </SwiperSlide>
                                                 ))}
                                             </div>

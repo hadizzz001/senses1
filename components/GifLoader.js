@@ -1,49 +1,41 @@
-"use client"
-import { useState, useEffect } from 'react';
+"use client";
 
-const GifLoader = () => {
-  const [showGif, setShowGif] = useState(true);
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { useState, useEffect } from "react";
+
+const SLoader = ({ onComplete }) => {
+  const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      setShowGif(false);
-    }, 2000);
+    const timer = setTimeout(() => {
+      setIsVisible(false);
+      if (onComplete) onComplete();
+    }, 2000); // Hide after 2 seconds
 
-    // Cleanup the timeout when the component unmounts
-    return () => clearTimeout(timeoutId);
-  }, []);
+    return () => clearTimeout(timer);
+  }, [onComplete]);
+
+  if (!isVisible) return null; // Hide component after animation
 
   return (
-    
-    <>
-      {showGif && (
-        <div
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'white',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            zIndex:"9999999999"
-          }}
-        >
-          <div
-            style={{
-              width:"5em",
-              zIndex:"9999999999"
-            }}
-          >
-            <img src="/load.gif" alt="Loading" />
-          </div>
-        </div>
-      )}
-    </>
-
+    <div className="fixed inset-0 flex items-center justify-center bg-[#ebebd3] z-[9999]">
+      <motion.div
+        initial={{ opacity: 1 }}
+        animate={{ opacity: 0 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 2, ease: "easeInOut" }}
+      >
+        <img
+          src="https://res.cloudinary.com/dxlfxsimy/image/upload/v1741868275/yo8n9xcs5biqz6mixpp6.jpg"
+          alt="S Loader"
+          width={100}
+          height={100}
+          className="w-24 h-24 object-contain"
+        />
+      </motion.div>
+    </div>
   );
 };
 
-export default GifLoader;
+export default SLoader;

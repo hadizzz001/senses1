@@ -55,18 +55,19 @@ const CartProvider = ({ children }) => {
     // Calculate subtotal whenever quantities change
     const newSubtotal = cart.reduce((acc, item) => {
       const quantity = quantities[item._id] || 1;
-      return acc + item.price * quantity;
+      return acc + item.discount * quantity;
     }, 0);
     setSubtotal(newSubtotal);
   }, [quantities, cart]);
 
   const addToCart = (item, quantity = {}) => {
-    const existingCartItemIndex = cart.findIndex((cartItem) => String(cartItem._id) === String(item._id));
+    const existingCartItemIndex = cart.findIndex((cartItem) => String(cartItem._id) === String(item._id)); 
+console.log("the new q=", quantity);
 
     if (existingCartItemIndex !== -1) {
       setQuantities((prevQuantities) => ({
         ...prevQuantities,
-        [item._id]: (prevQuantities[item._id] || 0) + quantity,
+        [item._id]:  quantity,
       }));
 
       dispatch({
@@ -75,7 +76,7 @@ const CartProvider = ({ children }) => {
           String(cartItem._id) === String(item._id)
             ? {
                 ...cartItem,
-                quantity: (cartItem.quantity || 0) + quantity, 
+                quantity:    quantity, 
               }
             : cartItem
         ),

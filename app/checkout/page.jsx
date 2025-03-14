@@ -5,27 +5,32 @@
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
- 
+
 import { useCart } from '../context/CartContext';
 import WhatsAppButton from "../../components/WhatsAppButton";
 
 
-const page = () => { 
+const page = () => {
   const [selectedOption, setSelectedOption] = useState(7.5);
   const [allTemp, setTemp] = useState()
   const { cart, removeFromCart, quantities, subtotal, addToCart } = useCart();
-  const [localQuantities, setLocalQuantities] = useState(quantities); 
+  const [localQuantities, setLocalQuantities] = useState(quantities);
   const [phone, setPhone] = useState("");
-  
+  const [isOpen, setIsOpen] = useState(false);
+  const [total, setTotal] = useState(0);
+  const [promoCode, setPromoCode] = useState("");
+  const [discountApplied, setDiscountApplied] = useState(false);
 
 
-  const [inputs, setInputs] = useState({ 
+
+  const [inputs, setInputs] = useState({
     fname: "",
     lname: "",
     phone: "",
-    address: '', 
+    address: '',
+    email: '',
   });
- 
+
 
   const handleTextboxChange = (textboxName) => (e) => {
     if (textboxName == "phone") {
@@ -45,7 +50,7 @@ const page = () => {
   const handleRemoveFromCart = (itemId) => {
     removeFromCart(itemId);
   };
- 
+
 
 
 
@@ -58,8 +63,31 @@ const page = () => {
 
 
 
-  
 
+  
+  useEffect(() => {
+    const promoUsed = localStorage.getItem("promoUsed"); // Check promo usage
+    const initialTotal = (subtotal + 4).toFixed(2);
+
+    if (promoUsed) {
+      setDiscountApplied(true);
+      setTotal(initialTotal); // NO discount after cart update
+    } else {
+      setTotal(initialTotal); // Default total if no promo used
+    }
+  }, [subtotal]); // Update when subtotal changes
+
+  const applyPromo = () => {
+    if (promoCode === "Abcd12345" && !discountApplied) {
+      const discountedTotal = ((subtotal + 4) * 0.9).toFixed(2);
+      setTotal(discountedTotal);
+      setDiscountApplied(true);
+      localStorage.setItem("promoUsed", "true"); // **PERMANENTLY disable promo**
+    } else {
+      alert("Invalid or already used promo code!");
+    }
+  };
+  
 
 
 
@@ -122,10 +150,206 @@ const page = () => {
 
       {cart && cart.length > 0 ? (
         <div className="wfacp-template-container">
+
+
+          <div className="wfacp-section wfacp-hg-by-box step_2 form_section_single_step_2_elementor-hific mt-20 md:hidden" data-field-count={2}>
+            <div className="wfacp_internal_form_wrap wfacp-comm-title flex justify-between items-center px-3">
+              <p className="cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
+                <span className="flex items-center myBB">
+                  Order summary
+                  {isOpen ? (
+                    <svg
+                      viewBox="0 0 11 6"
+                      width="14"
+                      height="14"
+                      className="ml-2 mr-2 myBB"
+                      fill="#8ea976"
+                    >
+                      <path
+                        className="st0 myBB"
+                        d="M5.4,4.4l4.5-4.2c0.2-0.3,0.7-0.3,0.9,0c0,0,0,0,0,0c0.3,0.3,0.3,0.7,0,1c0,0,0,0,0,0L5.9,5.8 C5.6,6.1,5.2,6.1,5,5.8L0.2,1.1c-0.3-0.3-0.3-0.7,0-0.9C0.4,0,0.8,0,1.1,0.2c0,0,0,0,0,0L5.4,4.4z"
+                      />
+                    </svg>
+                  ) : (
+                    <svg
+                      viewBox="0 0 11 6"
+                      width="14"
+                      height="14"
+                      className="ml-2 mr-2 myBB rotate-180"
+                      fill="#8ea976"
+                    >
+                      <path
+                        className="st0 myBB"
+                        d="M5.4,4.4l4.5-4.2c0.2-0.3,0.7-0.3,0.9,0c0,0,0,0,0,0c0.3,0.3,0.3,0.7,0,1c0,0,0,0,0,0L5.9,5.8 C5.6,6.1,5.2,6.1,5,5.8L0.2,1.1c-0.3-0.3-0.3-0.7,0-0.9C0.4,0,0.8,0,1.1,0.2c0,0,0,0,0,0L5.4,4.4z"
+                      />
+                    </svg>
+                  )}
+                </span>
+              </p>
+              <span className="myBB font-bold" style={{ fontSize: "20px" }}>${total}</span>
+            </div>
+
+
+            {isOpen && (
+              <div className="wfacp-comm-form-detail clearfix">
+                <div className="wfacp-row">
+                  <div className="wfacp_woocommerce_form_coupon wfacp-form-control-wrapper" id="order_coupon_field"></div>
+                  <div className="wfacp_order_summary wfacp_wrapper_start wfacp_order_sec" id="order_summary_field">
+
+                    <div className="wfacp_anim wfacp_order_summary_container">
+                      <table className="shop_table woocommerce-checkout-review-order-table elementor-hific">
+                      <tbody>
+  {cart?.map((obj, index) => (
+    <tr key={obj._id} className="cart_item">
+      <td className="product-name-area" style={{ display: "flex", alignItems: "center" }}>
+        {/* Product Image */}
+        <div className="product-image">
+          <div className="wfacp-pro-thumb">
+            <div className="wfacp-qty-ball" style={{ top: "-5px" }}>
+              <div className="wfacp-qty-count">
+                <span className="wfacp-pro-count">{localQuantities[obj._id]}</span>
+              </div>
+            </div>
+            <img src={obj.img[0]} width={50} height={50} alt={obj.title} />
+          </div>
+        </div>
+
+        {/* Product Name */}
+        <div className="product-name wfacp_summary_img_true" style={{ marginLeft: "10px", color: "#82838e" }}>
+          <span className="wfacp_order_summary_item_name" style={{  color: "#82838e" }}>
+            {obj.title}
+          </span>
+        </div>
+      </td>
+
+      {/* Price and Remove Button */}
+      <td className="product-total" style={{ color: "#82838e" }}>
+        <div className="wfacp_order_summary_item_total">
+          <span className="woocommerce-Price-amount amount" style={{  color: "#82838e" }}>
+            <bdi>
+              <span className="woocommerce-Price-currencySymbol" style={{  color: "#82838e" }}>$</span>
+              {(obj.discount * localQuantities[obj._id] || obj.discount).toFixed(2)}
+            </bdi>
+          </span>
+        </div>
+
+        <button 
+          className="Checkout_Cart_LineItems_LineItem_Remove" 
+          onClick={() => handleRemoveFromCart(obj._id)} 
+          style={{ position: "relative" }}
+        >
+          <span className="Checkout_Cart_LineItems_LineItem_Remove_Cross">
+            <span />
+            <span />
+          </span>
+          <span className="Checkout_Cart_LineItems_LineItem_Remove_Spinner">
+            <span />
+          </span>
+        </button>
+      </td>
+    </tr>
+  ))}
+</tbody>
+{!discountApplied && (
+  <div style={{ 
+  display: "flex", 
+  alignItems: "center", 
+  gap: "5px", 
+  padding: "5px", 
+  borderRadius: "5px", 
+  margin: "5px", 
+  border: "1px solid #222" // Added border to the container
+}}>
+  <input
+    type="text"
+    placeholder="Enter promo code"
+    value={promoCode}
+    onChange={(e) => setPromoCode(e.target.value)}
+    style={{ 
+      flex: 1, 
+      padding: "8px", 
+      border: "1px solid #222", 
+      borderRadius: "4px" 
+    }}
+  />
+  <button 
+    onClick={applyPromo} 
+    style={{ 
+      padding: "5px 12px", 
+      color: "#fff", 
+      border: "none", 
+      borderRadius: "4px", 
+      cursor: "pointer", 
+      background: "#222" 
+    }}
+  >
+    Apply
+  </button>
+</div>
+
+
+      )}
+      {discountApplied && <></>}
+
+                        <tfoot>
+                          <tr className="cart-subtotal">
+                            <th><span>Subtotal</span></th>
+                            <td>
+                              <span className="woocommerce-Price-amount amount">
+                                <bdi>
+                                  <span className="woocommerce-Price-currencySymbol">$</span>
+                                  {subtotal.toFixed(2)}
+                                </bdi>
+                              </span>
+                            </td>
+                          </tr>
+                          <tr className="shipping_total_fee">
+                            <td colSpan={1}><span style={{  color: "#82838e" }}>Delivery</span></td>
+                            <td colSpan={1} style={{ textAlign: "right" }}>
+                              <span className="woocommerce-Price-amount amount" style={{  color: "#82838e" }}>
+                                <bdi>
+                                  <span className="woocommerce-Price-currencySymbol" style={{  color: "#82838e" }}>$</span>
+                                  4.00
+                                </bdi>
+                              </span>
+                            </td>
+                          </tr>
+                          <tr className="order-total">
+                            <th><span>Total</span></th>
+                            <td>
+                              <strong>
+                                <span className="woocommerce-Price-amount amount">
+                                  <bdi>
+                                    <span className="woocommerce-Price-currencySymbol">$</span>
+                                    {total}
+                                  </bdi>
+                                </span>
+                              </strong>
+                            </td>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+
+
+
+
+
+
+
+
+
+
           <div
             data-elementor-type="wp-post"
             data-elementor-id={20120}
-            className="elementor elementor-20120"
+            className="elementor elementor-20120 md:mt-[150px]"
             data-elementor-post-type="wfacp_checkout"
           >
 
@@ -134,7 +358,7 @@ const page = () => {
               data-id="b92d2c"
               data-element_type="section"
               data-settings='{"background_background":"gradient"}'
-              style={{ backgroundImage: " linear-gradient(90deg, #FFFFFF 50%, #0E3530 50%)" }}
+              style={{ backgroundImage: " linear-gradient(90deg, #FFFFFF 50%, #ebebd3 50%)" }}
             >
               <div className="elementor-container elementor-column-gap-default">
                 <div
@@ -234,196 +458,234 @@ const page = () => {
                                     }}
                                   />
                                 </div>{" "}
+
+
                                 <form
-                                    name="checkout"
-                                    // method="post"
-                                    className="checkout woocommerce-checkout"
-                                    encType="multipart/form-data"
-                                    id="wfacp_checkout_form"
+                                  name="checkout"
+                                  // method="post"
+                                  className="checkout woocommerce-checkout"
+                                  encType="multipart/form-data"
+                                  id="wfacp_checkout_form"
+                                >
+
+                                  <div
+                                    className="wfacp-left-panel wfacp_page elementor single_step wfacp_last_page"
+                                    data-step="single_step"
                                   >
+                                    <style
+                                      dangerouslySetInnerHTML={{
+                                        __html:
+                                          '\n\n    @media (min-width: 768px) {\n        #wfacp_smart_buttons .wfacp_smart_button_outer_buttons[count="1"] .wfacp_smart_button_container {\n            width: 100%;\n            float: none;\n        }\n\n        #wfacp_smart_buttons .wfacp_smart_button_outer_buttons[count="2"] .wfacp_smart_button_container {\n            width: 50%;\n        }\n\n\n        #wfacp_smart_buttons .wfacp_smart_button_outer_buttons[count="3"] .wfacp_smart_button_container {\n            width: 33.33%;\n\n        }\n\n        #wfacp_smart_buttons .wfacp_smart_button_outer_buttons[count="4"] .wfacp_smart_button_container {\n            width: 25%;\n\n        }\n\n        #wfacp_smart_buttons .wfacp_smart_button_outer_buttons[count="1"] #pay_with_amazon {\n            background-size: 20%;\n        }\n        #wfacp_smart_buttons .wfacp_smart_button_outer_buttons[count="2"] #pay_with_amazon {\n            background-size: 30%;\n        }\n        #wfacp_smart_buttons .wfacp_smart_button_outer_buttons[count="3"] #pay_with_amazon {\n            background-size: 45%;\n        }\n        #wfacp_smart_buttons .wfacp_smart_button_outer_buttons[count="4"] #pay_with_amazon {\n            background-size: 50%;\n        }\n\n        #wfacp_smart_buttons .wfacp_smart_button_wrap_st {\n            margin: 0 -10px !important;\n        }\n\n        #wfacp_smart_buttons.wfacp_smart_buttons .wc-amazon-checkout-message.wc-amazon-payments-advanced-populated {\n            display: block;\n        }\n\n        #wfacp_smart_buttons.wfacp_smart_buttons div#pay_with_amazon,\n        #wfacp_smart_buttons #wfacp_smart_button_stripe_gpay_apay div#wc-stripe-payment-request-wrapper,\n        #wfacp_smart_buttons #wfacp_smart_button_stripe_gpay_apay div#wc-stripe-payment-request-wrapper,\n        #wfacp_smart_buttons .wfacp_smart_button_wrap_st div#paypal_box_button > div {\n            width: 100%;\n        }\n\n        .wfacp_smart_button_wrap_st div#paypal_box_button > div {\n            max-width: 100%;\n        }\n\n        #wfacp_smart_buttons.wfacp_smart_buttons .wfacp_smart_button_container {\n            display: block;\n            margin: 0 !important;\n            padding: 0 10px;\n            float: left;\n        }\n\n        #wfacp_smart_buttons.wfacp_smart_buttons .wfacp_smart_button_container iframe {\n            max-height: 42px !important;\n            height: 100% !important;\n        }\n\n        #wfacp_smart_buttons.wfacp_smart_buttons .wfacp_smart_button_container:after,\n        #wfacp_smart_buttons.wfacp_smart_buttons .wfacp_smart_button_container:before {\n            content: \'\';\n            display: block;\n        }\n\n        #wfacp_smart_buttons.wfacp_smart_buttons .wfacp_smart_button_container:after {\n            clear: both;\n        }\n\n        #wfacp_smart_buttons .wfacp_smart_button_wrap_st div#paypal_box_button .paypal-buttons {\n            min-width: 1px;\n            height: 42px !important;\n            display: block !important;\n        }\n    }\n\n'
+                                      }}
+                                    />
 
                                     <div
-                                      className="wfacp-left-panel wfacp_page elementor single_step wfacp_last_page"
-                                      data-step="single_step"
+                                      className="wfacp-section wfacp-hg-by-box step_0 form_section_single_step_0_elementor-hific "
+                                      data-field-count={19}
                                     >
-                                      <style
-                                        dangerouslySetInnerHTML={{
-                                          __html:
-                                            '\n\n    @media (min-width: 768px) {\n        #wfacp_smart_buttons .wfacp_smart_button_outer_buttons[count="1"] .wfacp_smart_button_container {\n            width: 100%;\n            float: none;\n        }\n\n        #wfacp_smart_buttons .wfacp_smart_button_outer_buttons[count="2"] .wfacp_smart_button_container {\n            width: 50%;\n        }\n\n\n        #wfacp_smart_buttons .wfacp_smart_button_outer_buttons[count="3"] .wfacp_smart_button_container {\n            width: 33.33%;\n\n        }\n\n        #wfacp_smart_buttons .wfacp_smart_button_outer_buttons[count="4"] .wfacp_smart_button_container {\n            width: 25%;\n\n        }\n\n        #wfacp_smart_buttons .wfacp_smart_button_outer_buttons[count="1"] #pay_with_amazon {\n            background-size: 20%;\n        }\n        #wfacp_smart_buttons .wfacp_smart_button_outer_buttons[count="2"] #pay_with_amazon {\n            background-size: 30%;\n        }\n        #wfacp_smart_buttons .wfacp_smart_button_outer_buttons[count="3"] #pay_with_amazon {\n            background-size: 45%;\n        }\n        #wfacp_smart_buttons .wfacp_smart_button_outer_buttons[count="4"] #pay_with_amazon {\n            background-size: 50%;\n        }\n\n        #wfacp_smart_buttons .wfacp_smart_button_wrap_st {\n            margin: 0 -10px !important;\n        }\n\n        #wfacp_smart_buttons.wfacp_smart_buttons .wc-amazon-checkout-message.wc-amazon-payments-advanced-populated {\n            display: block;\n        }\n\n        #wfacp_smart_buttons.wfacp_smart_buttons div#pay_with_amazon,\n        #wfacp_smart_buttons #wfacp_smart_button_stripe_gpay_apay div#wc-stripe-payment-request-wrapper,\n        #wfacp_smart_buttons #wfacp_smart_button_stripe_gpay_apay div#wc-stripe-payment-request-wrapper,\n        #wfacp_smart_buttons .wfacp_smart_button_wrap_st div#paypal_box_button > div {\n            width: 100%;\n        }\n\n        .wfacp_smart_button_wrap_st div#paypal_box_button > div {\n            max-width: 100%;\n        }\n\n        #wfacp_smart_buttons.wfacp_smart_buttons .wfacp_smart_button_container {\n            display: block;\n            margin: 0 !important;\n            padding: 0 10px;\n            float: left;\n        }\n\n        #wfacp_smart_buttons.wfacp_smart_buttons .wfacp_smart_button_container iframe {\n            max-height: 42px !important;\n            height: 100% !important;\n        }\n\n        #wfacp_smart_buttons.wfacp_smart_buttons .wfacp_smart_button_container:after,\n        #wfacp_smart_buttons.wfacp_smart_buttons .wfacp_smart_button_container:before {\n            content: \'\';\n            display: block;\n        }\n\n        #wfacp_smart_buttons.wfacp_smart_buttons .wfacp_smart_button_container:after {\n            clear: both;\n        }\n\n        #wfacp_smart_buttons .wfacp_smart_button_wrap_st div#paypal_box_button .paypal-buttons {\n            min-width: 1px;\n            height: 42px !important;\n            display: block !important;\n        }\n    }\n\n'
-                                        }}
-                                      />
+                                      <div className="wfacp_internal_form_wrap wfacp-comm-title ">
+                                        <h2 className="wfacp_section_heading wfacp_section_title ">
+                                          Shipping Information
+                                        </h2>
+                                      </div>
+                                      <div className="wfacp-comm-form-detail clearfix">
+                                        <div className="wfacp-row">
 
-                                      <div
-                                        className="wfacp-section wfacp-hg-by-box step_0 form_section_single_step_0_elementor-hific "
-                                        data-field-count={19}
-                                      >
-                                        <div className="wfacp_internal_form_wrap wfacp-comm-title ">
-                                          <h2 className="wfacp_section_heading wfacp_section_title ">
-                                            Shipping Information
-                                          </h2>
-                                        </div>
-                                        <div className="wfacp-comm-form-detail clearfix">
-                                          <div className="wfacp-row">
- 
-                                            <p
-                                              className="form-row form-row-first wfacp-form-control-wrapper wfacp-col-left-half  wfacp_field_required validate-required"
-                                              id="billing_first_name_field"
-                                              data-priority={10}
+                                        <p
+                                            className="form-row form-row-wide wfacp-form-control-wrapper wfacp-col-full  wfacp_field_required validate-required validate-email validate-email"
+                                            id="billing_email_field"
+                                            data-priority={110}
+                                          >
+                                            <label
+                                              htmlFor="billing_email"
+                                              className="wfacp-form-control-label"
                                             >
-                                              <label
-                                                htmlFor="billing_first_name"
-                                                className="wfacp-form-control-label"
+                                              Email&nbsp;
+                                              <abbr
+                                                className="required"
+                                                title="required"
                                               >
-                                                First name&nbsp;
-                                                <abbr
-                                                  className="required"
-                                                  title="required"
-                                                >
-                                                  *
-                                                </abbr>
-                                              </label>
-                                              <span className="woocommerce-input-wrapper">
-                                                <input
-                                                  type="text"
-                                                  className="input-text wfacp-form-control"
-                                                  name="billing_first_name"
-                                                  id="billing_first_name"
-                                                  placeholder="First name *"
-                                                  defaultValue=""
-                                                  autoComplete="given-name"
-                                                  value={inputs.fname}
-                                                  onChange={handleTextboxChange('fname')}
-                                                  required
-                                                />
-                                              </span>{" "}
-                                              <span
-                                                className="wfacp_inline_error"
-                                                data-key="billing_first_name_field"
+                                                *
+                                              </abbr>
+                                            </label>
+                                            <span className="woocommerce-input-wrapper">
+                                              <input
+                                                type="text"
+                                                className="input-text wfacp-form-control"
+                                                name="billing_email"
+                                                id="billing_email"
+                                                placeholder="Email *"
+                                                defaultValue=""
+                                                autoComplete="email"
+                                                value={inputs.email}
+                                                onChange={handleTextboxChange('email')}
+                                                required
                                               />
-                                            </p>
-                                            <p
-                                              className="form-row form-row-last wfacp-form-control-wrapper wfacp-col-left-half  wfacp_field_required validate-required"
-                                              id="billing_last_name_field"
-                                              data-priority={20}
-                                            >
-                                              <label
-                                                htmlFor="billing_last_name"
-                                                className="wfacp-form-control-label"
-                                              >
-                                                Last name&nbsp;
-                                                <abbr
-                                                  className="required"
-                                                  title="required"
-                                                >
-                                                  *
-                                                </abbr>
-                                              </label>
-                                              <span className="woocommerce-input-wrapper">
-                                                <input
-                                                  type="text"
-                                                  className="input-text wfacp-form-control"
-                                                  name="billing_last_name"
-                                                  id="billing_last_name"
-                                                  placeholder="Last name *"
-                                                  defaultValue=""
-                                                  autoComplete="family-name"
-                                                  value={inputs.lname}
-                                                  onChange={handleTextboxChange('lname')}
-                                                  required
-                                                />
-                                              </span>{" "}
-                                              <span
-                                                className="wfacp_inline_error"
-                                                data-key="billing_last_name_field"
-                                              />
-                                            </p>
-                                            <p
-                                              className="form-row form-row-wide wfacp-form-control-wrapper wfacp-col-full  wfacp_field_required validate-required validate-email validate-email"
-                                              id="billing_address_field"
-                                              data-priority={110}
-                                            >
-                                              <label
-                                                htmlFor="billing_address"
-                                                className="wfacp-form-control-label"
-                                              >
-                                                Address&nbsp;
-                                                <abbr
-                                                  className="required"
-                                                  title="required"
-                                                >
-                                                  *
-                                                </abbr>
-                                              </label>
-                                              <span className="woocommerce-input-wrapper">
-                                                <input
-                                                  type="text"
-                                                  className="input-text wfacp-form-control"
-                                                  name="billing_address"
-                                                  id="billing_address"
-                                                  placeholder="Address *"
-                                                  defaultValue=""
-                                                  autoComplete="address"
-                                                  value={inputs.address}
-                                                  onChange={handleTextboxChange('address')}
-                                                  required
-                                                />
-                                              </span>{" "}
-                                              <span
-                                                className="wfacp_inline_error"
-                                                data-key="billing_email_field"
-                                              />
-                                            </p>
-                                            <p
-                                              className="form-row form-row-wide wfacp-form-control-wrapper wfacp-col-full  wfacp_field_required validate-required validate-email validate-email"
-                                              id="billing_phone_field"
-                                              data-priority={110}
-                                            >
-                                              <label
-                                                htmlFor="billing_phone"
-                                                className="wfacp-form-control-label"
-                                              >
-                                                Phone&nbsp;
-                                                <abbr
-                                                  className="required"
-                                                  title="required"
-                                                >
-                                                  *
-                                                </abbr>
-                                              </label>
-                                              <span className="woocommerce-input-wrapper">
-                                                <input
-                                                  type="text"
-                                                  className="input-text wfacp-form-control"
-                                                  name="billing_phone"
-                                                  id="billing_phone"
-                                                  placeholder="Phone *"
-                                                  defaultValue=""
-                                                  autoComplete="phone"
-                                                  value={phone}
-                                                  onChange={handleTextboxChange('phone')}
-                                                  required
-                                                />
-                                              </span>{" "}
-                                              <span
-                                                className="wfacp_inline_error"
-                                                data-key="billing_email_field"
-                                              />
-                                            </p>
-
-
-                                            {" "}
+                                            </span>{" "}
                                             <span
                                               className="wfacp_inline_error"
-                                              data-key="billing_phone_field"
+                                              data-key="billing_email_field"
                                             />
-                                            <p />{" "}
-                                          </div>
+                                          </p>
+                                          <p
+                                            className="form-row form-row-first wfacp-form-control-wrapper wfacp-col-left-half  wfacp_field_required validate-required"
+                                            id="billing_first_name_field"
+                                            data-priority={10}
+                                          >
+                                            <label
+                                              htmlFor="billing_first_name"
+                                              className="wfacp-form-control-label"
+                                            >
+                                              First name&nbsp;
+                                              <abbr
+                                                className="required"
+                                                title="required"
+                                              >
+                                                *
+                                              </abbr>
+                                            </label>
+                                            <span className="woocommerce-input-wrapper">
+                                              <input
+                                                type="text"
+                                                className="input-text wfacp-form-control"
+                                                name="billing_first_name"
+                                                id="billing_first_name"
+                                                placeholder="First name *"
+                                                defaultValue=""
+                                                autoComplete="given-name"
+                                                value={inputs.fname}
+                                                onChange={handleTextboxChange('fname')}
+                                                required
+                                              />
+                                            </span>{" "}
+                                            <span
+                                              className="wfacp_inline_error"
+                                              data-key="billing_first_name_field"
+                                            />
+                                          </p>
+                                          <p
+                                            className="form-row form-row-last wfacp-form-control-wrapper wfacp-col-left-half  wfacp_field_required validate-required"
+                                            id="billing_last_name_field"
+                                            data-priority={20}
+                                          >
+                                            <label
+                                              htmlFor="billing_last_name"
+                                              className="wfacp-form-control-label"
+                                            >
+                                              Last name&nbsp;
+                                              <abbr
+                                                className="required"
+                                                title="required"
+                                              >
+                                                *
+                                              </abbr>
+                                            </label>
+                                            <span className="woocommerce-input-wrapper">
+                                              <input
+                                                type="text"
+                                                className="input-text wfacp-form-control"
+                                                name="billing_last_name"
+                                                id="billing_last_name"
+                                                placeholder="Last name *"
+                                                defaultValue=""
+                                                autoComplete="family-name"
+                                                value={inputs.lname}
+                                                onChange={handleTextboxChange('lname')}
+                                                required
+                                              />
+                                            </span>{" "}
+                                            <span
+                                              className="wfacp_inline_error"
+                                              data-key="billing_last_name_field"
+                                            />
+                                          </p>
+                                          <p
+                                            className="form-row form-row-wide wfacp-form-control-wrapper wfacp-col-full  wfacp_field_required validate-required validate-email validate-email"
+                                            id="billing_address_field"
+                                            data-priority={110}
+                                          >
+                                            <label
+                                              htmlFor="billing_address"
+                                              className="wfacp-form-control-label"
+                                            >
+                                              Address&nbsp;
+                                              <abbr
+                                                className="required"
+                                                title="required"
+                                              >
+                                                *
+                                              </abbr>
+                                            </label>
+                                            <span className="woocommerce-input-wrapper">
+                                              <input
+                                                type="text"
+                                                className="input-text wfacp-form-control"
+                                                name="billing_address"
+                                                id="billing_address"
+                                                placeholder="Address *"
+                                                defaultValue=""
+                                                autoComplete="address"
+                                                value={inputs.address}
+                                                onChange={handleTextboxChange('address')}
+                                                required
+                                              />
+                                            </span>{" "}
+                                            <span
+                                              className="wfacp_inline_error"
+                                              data-key="billing_email_field"
+                                            />
+                                          </p>
+                                          <p
+                                            className="form-row form-row-wide wfacp-form-control-wrapper wfacp-col-full  wfacp_field_required validate-required validate-email validate-email"
+                                            id="billing_phone_field"
+                                            data-priority={110}
+                                          >
+                                            <label
+                                              htmlFor="billing_phone"
+                                              className="wfacp-form-control-label"
+                                            >
+                                              Phone&nbsp;
+                                              <abbr
+                                                className="required"
+                                                title="required"
+                                              >
+                                                *
+                                              </abbr>
+                                            </label>
+                                            <span className="woocommerce-input-wrapper">
+                                              <input
+                                                type="text"
+                                                className="input-text wfacp-form-control"
+                                                name="billing_phone"
+                                                id="billing_phone"
+                                                placeholder="Phone *"
+                                                defaultValue=""
+                                                autoComplete="phone"
+                                                value={phone}
+                                                onChange={handleTextboxChange('phone')}
+                                                required
+                                              />
+                                            </span>{" "}
+                                            <span
+                                              className="wfacp_inline_error"
+                                              data-key="billing_email_field"
+                                            />
+                                          </p>
+
+
+                                          {" "}
+                                          <span
+                                            className="wfacp_inline_error"
+                                            data-key="billing_phone_field"
+                                          />
+                                          <p />{" "}
                                         </div>
                                       </div>
+                                    </div>
 
 
 
-                                      <div
+                                    <div
                                       className="wfacp-section wfacp-hg-by-box step_2 form_section_single_step_2_elementor-hific "
                                       data-field-count={2}
                                     >
@@ -475,7 +737,7 @@ const page = () => {
                                                                   <span className="wfacp-pro-count">{localQuantities[obj._id]}</span>
                                                                 </div>
                                                               </div>
-                                                              <img src={""+obj.img[0]}
+                                                              <img src={"" + obj.img[0]}
                                                                 width={100}
                                                                 height={100}
                                                               />{" "}
@@ -494,7 +756,7 @@ const page = () => {
                                                                 <span className="woocommerce-Price-currencySymbol">
                                                                   $
                                                                 </span>
-                                                                {(obj.price * localQuantities[obj._id] || obj.price).toFixed(2)}
+                                                                {(obj.discount * localQuantities[obj._id] || obj.discount).toFixed(2)}
                                                               </bdi>
                                                             </span>{" "}
                                                           </div>
@@ -522,6 +784,48 @@ const page = () => {
                                                 </tbody>
 
 
+
+                                                {!discountApplied && (
+  <div style={{ 
+  display: "flex", 
+  alignItems: "center", 
+  gap: "5px", 
+  padding: "5px", 
+  borderRadius: "5px", 
+  margin: "5px", 
+  border: "1px solid #222" // Added border to the container
+}}>
+  <input
+    type="text"
+    placeholder="Enter promo code"
+    value={promoCode}
+    onChange={(e) => setPromoCode(e.target.value)}
+    style={{ 
+      flex: 1, 
+      padding: "8px", 
+      border: "1px solid #222", 
+      borderRadius: "4px" 
+    }}
+  />
+  <button 
+    onClick={applyPromo} 
+    style={{ 
+      padding: "5px 12px", 
+      color: "#fff", 
+      border: "none", 
+      borderRadius: "4px", 
+      cursor: "pointer", 
+      background: "#222" 
+    }}
+  >
+    Apply
+  </button>
+</div>
+
+
+      )}
+      {discountApplied && <></>}
+
                                                 <tfoot>
                                                   <tr className="cart-subtotal">
                                                     <th>
@@ -538,30 +842,30 @@ const page = () => {
                                                       </span>
                                                     </td>
                                                   </tr>
-                                                  
-                                                    <tr className="shipping_total_fee">
-                                                      <td colSpan={1}>
-                                                        <span>Delivery<small style={{color:"red"}}> (Note: delivery fee may vary depending on location.)</small></span>
-                                                      </td>
-                                                      <td
-                                                        colSpan={1}
-                                                        style={{ textAlign: "right" }}
-                                                        data-title="Shipping"
-                                                      >
-                                                        <span>
-                                                          <span className="woocommerce-Price-amount amount">
-                                                            <bdi>
-                                                              <span className="woocommerce-Price-currencySymbol">
-                                                                $
-                                                              </span>
-                                                              3.00
-                                                              
-                                                            </bdi>
-                                                          </span>
+
+                                                  <tr className="shipping_total_fee">
+                                                    <td colSpan={1}>
+                                                      <span>Delivery </span>
+                                                    </td>
+                                                    <td
+                                                      colSpan={1}
+                                                      style={{ textAlign: "right" }}
+                                                      data-title="Shipping"
+                                                    >
+                                                      <span>
+                                                        <span className="woocommerce-Price-amount amount">
+                                                          <bdi>
+                                                            <span className="woocommerce-Price-currencySymbol">
+                                                              $
+                                                            </span>
+                                                            4.00
+
+                                                          </bdi>
                                                         </span>
-                                                      </td>
-                                                    </tr>
-                                                  
+                                                      </span>
+                                                    </td>
+                                                  </tr>
+
                                                   <style
                                                     dangerouslySetInnerHTML={{
                                                       __html:
@@ -579,7 +883,7 @@ const page = () => {
                                                             <span className="woocommerce-Price-currencySymbol">
                                                               $
                                                             </span>
-                                                            {selectedOption !== 0 ? (subtotal + 3).toFixed(2) : subtotal.toFixed(2)}
+                                                            {total}
                                                           </bdi>
                                                         </span>
                                                       </strong>{" "}
@@ -594,8 +898,8 @@ const page = () => {
                                       </div>
                                     </div>
 
-                                    </div>
-                                  </form>
+                                  </div>
+                                </form>
 
 
                               </div>
@@ -606,386 +910,13 @@ const page = () => {
                     </div>
 
 
-                    <WhatsAppButton inputs={inputs} items={cart} />
-
-                    <section
-                      className="elementor-section elementor-inner-section elementor-element elementor-element-1f152866 elementor-section-content-middle elementor-section-boxed elementor-section-height-default elementor-section-height-default"
-                      data-id="1f152866"
-                      data-element_type="section"
-                    >
-                      <div className="elementor-container elementor-column-gap-default">
-                        <div
-                          className="elementor-column elementor-col-50 elementor-inner-column elementor-element elementor-element-1ae8d88c"
-                          data-id="1ae8d88c"
-                          data-element_type="column"
-                        >
-                          <div className="elementor-widget-wrap elementor-element-populated">
-                            <div
-                              className="elementor-element elementor-element-51f925d7 elementor-align-center elementor-mobile-align-center elementor-tablet-align-left elementor-icon-list--layout-traditional elementor-list-item-link-full_width elementor-widget elementor-widget-icon-list"
-                              data-id="51f925d7"
-                              data-element_type="widget"
-                              data-widget_type="icon-list.default"
-                            >
-                              <div className="elementor-widget-container">
-                                <link
-                                  rel="stylesheet"
-                                  href="https://yourcard.au/wp-content/plugins/elementor/assets/css/widget-icon-list.min.css"
-                                />{" "}
-                                <ul className="elementor-icon-list-items">
-                                  <li className="elementor-icon-list-item">
-                                    <span className="elementor-icon-list-icon">
-                                      <FontAwesomeIcon
-                                        icon={faCheckCircle}
-                                        style={{ color: '#CD998E', marginLeft: '10px' }}
-                                      />
-                                    </span>
-                                    <span className="elementor-icon-list-text">
-                                      256-Bit Bank Level Security
-                                    </span>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                    <WhatsAppButton inputs={inputs} items={cart} total={total} />
 
 
-                        <div
-                          className="elementor-column elementor-col-50 elementor-inner-column elementor-element elementor-element-52241c0e"
-                          data-id="52241c0e"
-                          data-element_type="column"
-                        >
-                          <div className="elementor-widget-wrap elementor-element-populated">
-                            <div
-                              className="elementor-element elementor-element-2d078580 elementor-align-center elementor-mobile-align-center elementor-tablet-align-left elementor-icon-list--layout-traditional elementor-list-item-link-full_width elementor-widget elementor-widget-icon-list"
-                              data-id="2d078580"
-                              data-element_type="widget"
-                              data-widget_type="icon-list.default"
-                            >
-                              <div className="elementor-widget-container">
-                                <ul className="elementor-icon-list-items">
-                                  <li className="elementor-icon-list-item">
-                                    <span className="elementor-icon-list-icon">
-                                      <FontAwesomeIcon
-                                        icon={faCheckCircle}
-                                        style={{ color: '#CD998E', marginLeft: '10px' }}
-                                      />
-                                    </span>
-                                    <span className="elementor-icon-list-text">
-                                      100% Secure Payments
-                                    </span>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </section>
 
-                    <div
-                      className="elementor-element elementor-element-5ffcd68 elementor-widget elementor-widget-spacer"
-                      data-id="5ffcd68"
-                      data-element_type="widget"
-                      data-widget_type="spacer.default"
-                    >
-                      <div className="elementor-widget-container">
-                        <style
-                          dangerouslySetInnerHTML={{
-                            __html:
-                              "/*! elementor - v3.20.0 - 26-03-2024 */\n.elementor-column .elementor-spacer-inner{height:var(--spacer-size)}.e-con{--container-widget-width:100%}.e-con-inner>.elementor-widget-spacer,.e-con>.elementor-widget-spacer{width:var(--container-widget-width,var(--spacer-size));--align-self:var(--container-widget-align-self,initial);--flex-shrink:0}.e-con-inner>.elementor-widget-spacer>.elementor-widget-container,.e-con>.elementor-widget-spacer>.elementor-widget-container{height:100%;width:100%}.e-con-inner>.elementor-widget-spacer>.elementor-widget-container>.elementor-spacer,.e-con>.elementor-widget-spacer>.elementor-widget-container>.elementor-spacer{height:100%}.e-con-inner>.elementor-widget-spacer>.elementor-widget-container>.elementor-spacer>.elementor-spacer-inner,.e-con>.elementor-widget-spacer>.elementor-widget-container>.elementor-spacer>.elementor-spacer-inner{height:var(--container-widget-height,var(--spacer-size))}.e-con-inner>.elementor-widget-spacer.elementor-widget-empty,.e-con>.elementor-widget-spacer.elementor-widget-empty{position:relative;min-height:22px;min-width:22px}.e-con-inner>.elementor-widget-spacer.elementor-widget-empty .elementor-widget-empty-icon,.e-con>.elementor-widget-spacer.elementor-widget-empty .elementor-widget-empty-icon{position:absolute;top:0;bottom:0;left:0;right:0;margin:auto;padding:0;width:22px;height:22px}"
-                          }}
-                        />{" "}
-                        <div className="elementor-spacer">
-                          <div className="elementor-spacer-inner" />
-                        </div>
-                      </div>
-                    </div>
-                    <section
-                      className="elementor-section elementor-inner-section elementor-element elementor-element-7c2f183 elementor-section-boxed elementor-section-height-default elementor-section-height-default"
-                      data-id="7c2f183"
-                      data-element_type="section"
-                    >
-                      <div className="elementor-container elementor-column-gap-default">
-                        <div
-                          className="elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-4242006c"
-                          data-id="4242006c"
-                          data-element_type="column"
-                        >
-                          <div className="elementor-widget-wrap elementor-element-populated">
-                            <div
-                              className="elementor-element elementor-element-29ec9a6c elementor-widget__width-auto elementor-widget elementor-widget-image"
-                              data-id="29ec9a6c"
-                              data-element_type="widget"
-                              data-widget_type="image.default"
-                            >
-                              <div className="elementor-widget-container">
-                                <img
-                                  decoding="async"
-                                  src="https://d3ldyx3r2ad3ic.cloudfront.net/templates/template-assets/images/store-checkout-2/mcafe.png"
-                                  title=""
-                                  alt=""
-                                  loading="lazy"
-                                />{" "}
-                              </div>
-                            </div>
-                            <div
-                              className="elementor-element elementor-element-27701317 elementor-widget__width-auto elementor-widget elementor-widget-image"
-                              data-id={27701317}
-                              data-element_type="widget"
-                              data-widget_type="image.default"
-                            >
-                              <div className="elementor-widget-container">
-                                <img
-                                  decoding="async"
-                                  src="https://d3ldyx3r2ad3ic.cloudfront.net/templates/template-assets/images/store-checkout-2/norton.png"
-                                  title=""
-                                  alt=""
-                                  loading="lazy"
-                                />{" "}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </section>
-                    <div
-                      className="elementor-element elementor-element-8ca5397 elementor-widget elementor-widget-spacer"
-                      data-id="8ca5397"
-                      data-element_type="widget"
-                      data-widget_type="spacer.default"
-                    >
-                      <div className="elementor-widget-container">
-                        <div className="elementor-spacer">
-                          <div className="elementor-spacer-inner" />
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </div>
-                <div
-                  className="elementor-column elementor-col-50 elementor-top-column elementor-element elementor-element-462e12f4"
-                  data-id="462e12f4"
-                  data-element_type="column"
-                  data-settings='{"background_background":"classic"}'
-                >
-                  <div className="elementor-widget-wrap elementor-element-populated" style={{ backgroundColor: "#0E3530" }}>
-                    <section
-                      className="elementor-section elementor-inner-section elementor-element elementor-element-5abb9fe elementor-section-boxed elementor-section-height-default elementor-section-height-default"
-                      data-id="5abb9fe"
-                      data-element_type="section"
-                    >
-                      <div className="elementor-container elementor-column-gap-default">
-                        <div
-                          className="elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-fd1abaa"
-                          data-id="fd1abaa"
-                          data-element_type="column"
-                        >
-                          <div className="elementor-widget-wrap elementor-element-populated">
-                            <div
-                              className="elementor-element elementor-element-0e1fd4d elementor-widget elementor-widget-spacer"
-                              data-id="0e1fd4d"
-                              data-element_type="widget"
-                              data-widget_type="spacer.default"
-                            >
-                              <div className="elementor-widget-container">
-                                <div className="elementor-spacer">
-                                  <div className="elementor-spacer-inner" />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </section>
-                    <div
-                      className="elementor-element elementor-element-46b87940 elementor-widget elementor-widget-text-editor"
-                      data-id="46b87940"
-                      data-element_type="widget"
-                      data-widget_type="text-editor.default"
-                    >
-                      <div className="elementor-widget-container">
-                        <style
-                          dangerouslySetInnerHTML={{
-                            __html:
-                              "/*! elementor - v3.20.0 - 26-03-2024 */\n.elementor-widget-text-editor.elementor-drop-cap-view-stacked .elementor-drop-cap{background-color:#69727d;color:#fff}.elementor-widget-text-editor.elementor-drop-cap-view-framed .elementor-drop-cap{color:#69727d;border:3px solid;background-color:transparent}.elementor-widget-text-editor:not(.elementor-drop-cap-view-default) .elementor-drop-cap{margin-top:8px}.elementor-widget-text-editor:not(.elementor-drop-cap-view-default) .elementor-drop-cap-letter{width:1em;height:1em}.elementor-widget-text-editor .elementor-drop-cap{float:left;text-align:center;line-height:1;font-size:50px}.elementor-widget-text-editor .elementor-drop-cap-letter{display:inline-block}"
-                          }}
-                        />{" "}
-                        Shop With Confidence{" "}
-                      </div>
-                    </div>
-                    <div
-                      className="elementor-element elementor-element-6671b079 elementor-widget elementor-widget-text-editor"
-                      data-id="6671b079"
-                      data-element_type="widget"
-                      data-widget_type="text-editor.default"
-                    >
-                      <div className="elementor-widget-container">
-                        <p>Trusted by more than 1000+ users</p>{" "}
-                      </div>
-                    </div>
-                    <div
-                      className="elementor-element elementor-element-2d85f393 elementor-icon-list--layout-traditional elementor-list-item-link-full_width elementor-widget elementor-widget-icon-list"
-                      data-id="2d85f393"
-                      data-element_type="widget"
-                      data-widget_type="icon-list.default"
-                    >
-                      <div className="elementor-widget-container">
-                        <ul className="elementor-icon-list-items">
-                          <li className="elementor-icon-list-item">
-                            <span className="elementor-icon-list-icon">
-                              <FontAwesomeIcon
-                                icon={faCheckCircle}
-                                style={{ color: '#CD998E', marginLeft: '10px' }}
-                              />
-                            </span>
-                            <span className="elementor-icon-list-text">
-                              Fully Customisable Profile
-                            </span>
-                          </li>
-                          <li className="elementor-icon-list-item">
-                            <span className="elementor-icon-list-icon">
-                              <FontAwesomeIcon
-                                icon={faCheckCircle}
-                                style={{ color: '#CD998E', marginLeft: '10px' }}
-                              />
-                            </span>
-                            <span className="elementor-icon-list-text">
-                              Contact Card, Website, Social Media and More
-                            </span>
-                          </li>
-                          <li className="elementor-icon-list-item">
-                            <span className="elementor-icon-list-icon">
-                              <FontAwesomeIcon
-                                icon={faCheckCircle}
-                                style={{ color: '#CD998E', marginLeft: '10px' }}
-                              />
-                            </span>
-                            <span className="elementor-icon-list-text">
-                              Secure Encrypted Data
-                            </span>
-                          </li>
-                          <li className="elementor-icon-list-item">
-                            <span className="elementor-icon-list-icon">
-                              <FontAwesomeIcon
-                                icon={faCheckCircle}
-                                style={{ color: '#CD998E', marginLeft: '10px' }}
-                              />
-                            </span>
-                            <span className="elementor-icon-list-text">
-                              24/7 Customer Service
-                            </span>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    <div
-                      className="elementor-element elementor-element-c0e01b3 elementor-widget elementor-widget-spacer"
-                      data-id="c0e01b3"
-                      data-element_type="widget"
-                      data-widget_type="spacer.default"
-                    >
-                      <div className="elementor-widget-container">
-                        <div className="elementor-spacer">
-                          <div className="elementor-spacer-inner" />
-                        </div>
-                      </div>
-                    </div>
-               
 
-
-
-
-
-
-
- 
-
-
-
-
-                    <div
-                      className="elementor-element elementor-element-26beaee9 elementor-widget-divider--view-line elementor-widget elementor-widget-divider"
-                      data-id="26beaee9"
-                      data-element_type="widget"
-                      data-widget_type="divider.default"
-                    >
-                      <div className="elementor-widget-container">
-                        <style
-                          dangerouslySetInnerHTML={{
-                            __html:
-                              '/*! elementor - v3.20.0 - 26-03-2024 */\n.elementor-widget-divider{--divider-border-style:none;--divider-border-width:1px;--divider-color:#0c0d0e;--divider-icon-size:20px;--divider-element-spacing:10px;--divider-pattern-height:24px;--divider-pattern-size:20px;--divider-pattern-url:none;--divider-pattern-repeat:repeat-x}.elementor-widget-divider .elementor-divider{display:flex}.elementor-widget-divider .elementor-divider__text{font-size:15px;line-height:1;max-width:95%}.elementor-widget-divider .elementor-divider__element{margin:0 var(--divider-element-spacing);flex-shrink:0}.elementor-widget-divider .elementor-icon{font-size:var(--divider-icon-size)}.elementor-widget-divider .elementor-divider-separator{display:flex;margin:0;direction:ltr}.elementor-widget-divider--view-line_icon .elementor-divider-separator,.elementor-widget-divider--view-line_text .elementor-divider-separator{align-items:center}.elementor-widget-divider--view-line_icon .elementor-divider-separator:after,.elementor-widget-divider--view-line_icon .elementor-divider-separator:before,.elementor-widget-divider--view-line_text .elementor-divider-separator:after,.elementor-widget-divider--view-line_text .elementor-divider-separator:before{display:block;content:"";border-block-end:0;flex-grow:1;border-block-start:var(--divider-border-width) var(--divider-border-style) var(--divider-color)}.elementor-widget-divider--element-align-left .elementor-divider .elementor-divider-separator>.elementor-divider__svg:first-of-type{flex-grow:0;flex-shrink:100}.elementor-widget-divider--element-align-left .elementor-divider-separator:before{content:none}.elementor-widget-divider--element-align-left .elementor-divider__element{margin-left:0}.elementor-widget-divider--element-align-right .elementor-divider .elementor-divider-separator>.elementor-divider__svg:last-of-type{flex-grow:0;flex-shrink:100}.elementor-widget-divider--element-align-right .elementor-divider-separator:after{content:none}.elementor-widget-divider--element-align-right .elementor-divider__element{margin-right:0}.elementor-widget-divider--element-align-start .elementor-divider .elementor-divider-separator>.elementor-divider__svg:first-of-type{flex-grow:0;flex-shrink:100}.elementor-widget-divider--element-align-start .elementor-divider-separator:before{content:none}.elementor-widget-divider--element-align-start .elementor-divider__element{margin-inline-start:0}.elementor-widget-divider--element-align-end .elementor-divider .elementor-divider-separator>.elementor-divider__svg:last-of-type{flex-grow:0;flex-shrink:100}.elementor-widget-divider--element-align-end .elementor-divider-separator:after{content:none}.elementor-widget-divider--element-align-end .elementor-divider__element{margin-inline-end:0}.elementor-widget-divider:not(.elementor-widget-divider--view-line_text):not(.elementor-widget-divider--view-line_icon) .elementor-divider-separator{border-block-start:var(--divider-border-width) var(--divider-border-style) var(--divider-color)}.elementor-widget-divider--separator-type-pattern{--divider-border-style:none}.elementor-widget-divider--separator-type-pattern.elementor-widget-divider--view-line .elementor-divider-separator,.elementor-widget-divider--separator-type-pattern:not(.elementor-widget-divider--view-line) .elementor-divider-separator:after,.elementor-widget-divider--separator-type-pattern:not(.elementor-widget-divider--view-line) .elementor-divider-separator:before,.elementor-widget-divider--separator-type-pattern:not([class*=elementor-widget-divider--view]) .elementor-divider-separator{width:100%;min-height:var(--divider-pattern-height);-webkit-mask-size:var(--divider-pattern-size) 100%;mask-size:var(--divider-pattern-size) 100%;-webkit-mask-repeat:var(--divider-pattern-repeat);mask-repeat:var(--divider-pattern-repeat);background-color:var(--divider-color);-webkit-mask-image:var(--divider-pattern-url);mask-image:var(--divider-pattern-url)}.elementor-widget-divider--no-spacing{--divider-pattern-size:auto}.elementor-widget-divider--bg-round{--divider-pattern-repeat:round}.rtl .elementor-widget-divider .elementor-divider__text{direction:rtl}.e-con-inner>.elementor-widget-divider,.e-con>.elementor-widget-divider{width:var(--container-widget-width,100%);--flex-grow:var(--container-widget-flex-grow)}'
-                          }}
-                        />{" "}
-                        <div className="elementor-divider">
-                          <span className="elementor-divider-separator"></span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <section
-                      className="elementor-section elementor-inner-section elementor-element elementor-element-d69b4d5 elementor-section-boxed elementor-section-height-default elementor-section-height-default"
-                      data-id="d69b4d5"
-                      data-element_type="section"
-                    >
-                      <div className="elementor-container elementor-column-gap-default">
-                        <div
-                          className="elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-ac02d3e"
-                          data-id="ac02d3e"
-                          data-element_type="column"
-                        >
-                          <div className="elementor-widget-wrap elementor-element-populated">
-                            <div
-                              className="elementor-element elementor-element-70e47e6 elementor-widget elementor-widget-spacer"
-                              data-id="70e47e6"
-                              data-element_type="widget"
-                              data-widget_type="spacer.default"
-                            >
-                              <div className="elementor-widget-container">
-                                <div className="elementor-spacer">
-                                  <div className="elementor-spacer-inner" />
-                                </div>
-                              </div>
-                            </div>
-                            <div
-                              className="elementor-element elementor-element-69635c4 elementor-align-center elementor-widget elementor-widget-button"
-                              data-id="69635c4"
-                              data-element_type="widget"
-                              data-widget_type="button.default"
-                            >
-                              <div className="elementor-widget-container">
-                                <div className="elementor-button-wrapper">
-                                  <a
-                                    className="elementor-button elementor-button-link elementor-size-sm"
-                                    href="/shop"
-                                  >
-                                    <span className="elementor-button-content-wrapper">
-                                      <span className="elementor-button-text">
-                                        Continue Shopping
-                                      </span>
-                                    </span>
-                                  </a>
-                                </div>
-                              </div>
-                            </div>
-                            <div
-                              className="elementor-element elementor-element-aa53a25 elementor-widget elementor-widget-spacer"
-                              data-id="aa53a25"
-                              data-element_type="widget"
-                              data-widget_type="spacer.default"
-                            >
-                              <div className="elementor-widget-container">
-                                <div className="elementor-spacer">
-                                  <div className="elementor-spacer-inner" />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </div>
               </div>
             </section>
 
@@ -1006,7 +937,7 @@ const page = () => {
               <path d="M1.5 2h3s1.5 0 2 2l4 13s.4 1 1 1h13s3.6-.3 4-4l1-5s0-1-2-1h-19" />
             </svg>
           </div>
-          <p className="EmptyCartBlurb">You have no items in your shopping cart.</p>
+          <p className="EmptyCartBlurb">You have no items in your shopping bag.</p>
           <a
             href="/shop"
             className="Common_Button"
@@ -1018,39 +949,39 @@ const page = () => {
         </div>
 
       )}
-<style
-  dangerouslySetInnerHTML={{
-    __html:
-      '\n\n  select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"] {\n    font-family: initial;\n    font-size: initial;\n    line-height: initial;\n    font-weight: initial;\n    padding: initial;\n    border-radius: initial;\n    border-style: initial;\n    border-width: initial;\n    border-color: initial;\n    background-color: initial;\n    margin-bottom: initial;\n    text-shadow: initial;\n    box-shadow: initial;\n    box-sizing: initial;\n    transition: initial;\n    color: initial;\n}\n'
-  }}
-/>
-<style
-  dangerouslySetInnerHTML={{
-    __html:
-      "\n\n.NewsletterSignupFooter_Component .klaviyo_submit_button {\n  line-height: inherit;\n}\n"
-  }}
-/>
-<style
-  dangerouslySetInnerHTML={{ __html: "\n\nbody {\n      color: initial;\n}\n" }}
-/>
+      <style
+        dangerouslySetInnerHTML={{
+          __html:
+            '\n\n  select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"] {\n    font-family: initial;\n    font-size: initial;\n    line-height: initial;\n    font-weight: initial;\n    padding: initial;\n    border-radius: initial;\n    border-style: initial;\n    border-width: initial;\n    border-color: initial;\n    background-color: initial;\n    margin-bottom: initial;\n    text-shadow: initial;\n    box-shadow: initial;\n    box-sizing: initial;\n    transition: initial;\n    color: initial;\n}\n'
+        }}
+      />
+      <style
+        dangerouslySetInnerHTML={{
+          __html:
+            "\n\n.NewsletterSignupFooter_Component .klaviyo_submit_button {\n  line-height: inherit;\n}\n"
+        }}
+      />
+      <style
+        dangerouslySetInnerHTML={{ __html: "\n\nbody {\n      color: initial;\n}\n" }}
+      />
 
 
-<style
-  dangerouslySetInnerHTML={{
-    __html:
-      "\n  .Common_Button:focus, .Common_Button:hover {\n    color:#fff !important;\n}\n"
-  }}
-/>
+      <style
+        dangerouslySetInnerHTML={{
+          __html:
+            "\n  .Common_Button:focus, .Common_Button:hover {\n    color:#fff !important;\n}\n"
+        }}
+      />
 
 
 
 
-<style
-  dangerouslySetInnerHTML={{
-    __html:
-      "\n  .HtmlProductAddToCart{\n        line-height: normal !important;\n  }\n"
-  }}
-/>
+      <style
+        dangerouslySetInnerHTML={{
+          __html:
+            "\n  .HtmlProductAddToCart{\n        line-height: normal !important;\n  }\n"
+        }}
+      />
 
 
 

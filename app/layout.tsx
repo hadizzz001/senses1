@@ -9,6 +9,7 @@ import { useSearchParams } from 'next/navigation'
 import { CartProvider } from './context/CartContext';
 import { BooleanProvider } from './context/CartBoolContext'; 
 import GifLoader from '../components/GifLoader'
+import Offer from '../components/Offer'
 import WhatsAppIcon from '../components/WhatsAppIcon'; 
 
  
@@ -59,23 +60,23 @@ export default function RootLayout({
     property="og:description"
   />
   <meta
-    content="https://res.cloudinary.com/dxlfxsimy/image/upload/v1740859511/j8oeaqn4tr1mvq5fypaw.jpg"
+    content="hthttps://res.cloudinary.com/dxlfxsimy/image/upload/v1741868275/yo8n9xcs5biqz6mixpp6.jpg"
     name=""
     property="og:image"
   />
    
   <link
-    href="/favicon.ico"
+    href="https://res.cloudinary.com/dxlfxsimy/image/upload/v1741868275/yo8n9xcs5biqz6mixpp6.jpg"
     rel="apple-touch-icon"
     sizes="180x180"
   />
   <link
-    href="/favicon.ico"
+    href="https://res.cloudinary.com/dxlfxsimy/image/upload/v1741868275/yo8n9xcs5biqz6mixpp6.jpg"
     rel="icon"
     sizes="32x32" 
   />
   <link
-    href="/favicon.ico"
+    href="https://res.cloudinary.com/dxlfxsimy/image/upload/v1741868275/yo8n9xcs5biqz6mixpp6.jpg"
     rel="icon"
     sizes="16x16" 
   /> 
@@ -129,7 +130,7 @@ export default function RootLayout({
 
       <body>
 
- 
+      <Offer /> 
       <GifLoader />
 
         

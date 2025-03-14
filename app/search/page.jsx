@@ -9,16 +9,10 @@ const Body = () => {
     const searchParams = useSearchParams()
     const search = searchParams.get('q')
     const search2 = searchParams.get('cat')
-    const search3 = searchParams.get('brnd')
-    const [isCodeValid, setIsCodeValid] = useState(false);
+    const search3 = searchParams.get('subcat')
 
-    useEffect(() => {
-      // Check localStorage for the code
-      const storedCode = localStorage.getItem("accessCode");
-      if (storedCode === "abcd12345") {
-        setIsCodeValid(true);
-      }
-    }, []);
+    
+
   
    
 
@@ -30,38 +24,48 @@ const Body = () => {
 
 
     useEffect(() => {
-        const fetchCategories = async () => {
+        const fetchProducts = async () => {
             try {
-                if (search2) {
-                    if(search2 =="yes"){
-                        const response = await fetch(`/api/products5`);
-                        const data = await response.json();
-                        setTemp(data);
+                // Fetch all products first
+                const response = await fetch('/api/products');
+                const data = await response.json();
+
+                // Filter data based on search criteria
+                let filteredData = data;
+
+                // Filter by search2 (arrival="yes")
+                if(search2){
+                    if (search2 === 'yes') {
+                        filteredData = filteredData.filter(item => item.arrival === 'yes');
                     }
-                    else{
-                        const response = await fetch(`/api/products1/${search2}`);
-                        const data = await response.json();
-                        setTemp(data);
+                    else{ 
+                        filteredData = filteredData.filter(item => item.category.toLowerCase() === search2.toLowerCase());
                     }
-                    
                 }
-                else if (search) {
-                    const response = await fetch(`/api/products3/${search}`);
-                    const data = await response.json();
-                    setTemp(data);
+
+
+
+
+                // Filter by search (title contains)
+                if (search) {
+                    filteredData = filteredData.filter(item => item.title.toLowerCase().includes(search.toLowerCase()));
                 }
-                else if (search3) {
-                    const response = await fetch(`/api/products4/${search3}`);
-                    const data = await response.json();
-                    setTemp(data);
-                } 
+
+                // Filter by search3 (subcategory)
+                if (search3) {
+                    filteredData = filteredData.filter(item => item.subcategory && item.subcategory.toLowerCase() === search3.toLowerCase());
+                }
+
+                // Set the filtered data to state
+                setTemp(filteredData);
             } catch (error) {
-                console.error("Error fetching categories:", error);
+                console.error("Error fetching products:", error);
             }
         };
 
-        fetchCategories();
-    }, []);
+        fetchProducts();
+    }, [ ]); // Add dependencies to trigger fetch on any search change
+
 
 
 
@@ -90,7 +94,7 @@ const Body = () => {
 
                 <header className="br_text-white  br_p-3 br_pt-11 md:br_py-20 br_flex md:br_justify-center">
                     <div className="br_text-left md:br_max-w-[600px] lg:br_max-w-[800px] md:br_text-center br_flex br_flex-col br_gap-2  md:br_gap-4 md:br_items-center">
-                        <h1 className="br_text-3xl-serif md:br_text-4xl-serif initial:br_text-white">
+                        <h1 className="myBB br_text-3xl-serif md:br_text-4xl-serif initial:br_text-white">
                             Are you looking for one of these?
                         </h1>
                     </div>
@@ -147,16 +151,17 @@ const Body = () => {
                                                             <h3 className="br_text-base-sans-spaced br_line-clamp-2 sm:br_line-clamp-none edition:br_text-grey-500 edition:br_hidden first:edition:br_inline edition:before:br_content-['_–_'] apex:edition:br_text-grey-300">
                                                                 <a
                                                                     href={`/product?id=${item._id}&&imgg=${item.img[0]}`}
-                                                                    className="br_text-current br_no-underline"
+                                                                    className="br_text-current br_no-underline myBB"
                                                                     id='anchorNew'
                                                                 >
                                                                     {item.title}
                                                                     <span className="br_absolute br_inset-0 br_z-10" aria-hidden="true" />
                                                                 </a>
                                                             </h3>
-                                                            <div className="br_text-base-sans-bold-spaced br_text-white br_inline-flex br_flex-wrap br_gap-x-2 br_items-baseline apex:br_text-white group-[.centered]/tile:br_justify-center">
-                                                                ${item.price}
-                                                            </div> 
+                                                            <div className="price-container br_inline-flex br_flex-wrap br_gap-x-2 br_items-baseline apex:br_text-white group-[.centered]/tile:br_justify-center">
+                                <span className="old-price br_text-gray-500 br_line-through myBB">${item.price}</span>
+                                <span className="new-price myBB">${item.discount}</span>
+                              </div>
                                                             <br />
                                                           
 
@@ -179,7 +184,7 @@ const Body = () => {
                                 ) : (
 
                                     <div className='container'>
-                                        <h2 className='text-black text-xl dont-bold'>Nothing found...</h2>
+                                        <h2 className='text-black text-xl dont-bold myBB'>Nothing found...</h2>
 
                                     </div>
 

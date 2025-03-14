@@ -54,12 +54,12 @@ const YourComponent = () => {
                             <div key={category} className="mb-8">
                                 {/* Title Section */}
                                 <div className="flex items-center justify-between w-full">
-                                    <h1 className="py-2 leading-[0rem] font-stretch-[66.66%] not-italic tracking-widest uppercase text-white transition text-nowrap font-bold text-3xl">
+                                    <h1 className="py-2 leading-[0rem] font-stretch-[66.66%] not-italic tracking-widest uppercase  transition text-nowrap font-bold text-3xl myBB">
                                         {category}
                                     </h1>
-                                    <button id="mybbtn" onClick={() => router.push("/search?cat="+category)}>Shop All</button>
+                                    <button id="mybbtn" className='myBB' onClick={() => router.push("/search?cat="+category)}>Shop All</button>
                                 </div>
-                                <div className="w-[70px] h-[5px] bg-[#CD998E] mt-1 mb-5"></div>
+                                <div className="w-[70px] h-[5px] bg-[#8ea976] mt-1 mb-5"></div>
 
                                 {/* Swiper Section */}
                                 {categories[category].length > 0 ? (

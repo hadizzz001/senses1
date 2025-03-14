@@ -37,7 +37,7 @@ const ResponsiveVideo = () => {
 
   return (
     <>
-      <h1 className="uppercase text-center">Our Collections</h1>
+      <h1 className="uppercase text-center myBB">Our Collections</h1>
       <div className="odd-container">
         {/* Left Side - First Category */}
         {categories.length > 0 && (

@@ -2,10 +2,9 @@
 import { useCart } from '../app/context/CartContext'; 
 import { useState } from 'react';
 
-const WhatsAppButton = ({ inputs, items }) => {
-    const { cart, removeFromCart, updateQuantity, clearCart, isModalOpen, toggleModal } = useCart();
+const WhatsAppButton = ({ inputs, items, total }) => {
+    const { cart, removeFromCart, updateQuantity, clearCart, isModalOpen, toggleModal ,subtotal} = useCart();
     const [error, setError] = useState(null);
-
 
  
     
@@ -38,8 +37,8 @@ const WhatsAppButton = ({ inputs, items }) => {
     };
 
     const validateInputs = (inputs) => {
-        const { address, fname, lname, phone } = inputs;
-        return address && fname && lname && phone;
+        const { address, fname, lname, phone, email } = inputs;
+        return address && fname && lname && phone && email;
     };
 
     return (
@@ -56,15 +55,19 @@ const WhatsAppButton = ({ inputs, items }) => {
 
 export default WhatsAppButton;
 
-const createWhatsAppURL = (inputs, items) => {
-    const { address, fname, lname, phone } = inputs;
+const createWhatsAppURL = (inputs, items, total) => {
+    const { address, fname, lname, phone , email} = inputs;
 
     // Calculate the total amount
-    const totalAmount = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const totalAmount = items.reduce((sum, item) => sum + item.discount * item.quantity, 0);
+
+    console.log("totalAmount=", total);
+    
 
     // Formatting the message
     const message = `
     *Customer Information:*
+    Name: ${email}
     Name: ${fname} ${lname} 
     Phone: ${phone}
     Address: ${address}
@@ -74,16 +77,16 @@ const createWhatsAppURL = (inputs, items) => {
       Item ${index + 1}:
       - Name: ${item.title} 
       - Quantity: ${item.quantity}
-      - Price: $${item.price}
+      - Price: $${item.discount}
       - Image: ${item.img[0]} 
     `).join('\n')}
 
     Subtotal: $${totalAmount.toFixed(2)}
-    Delivery fee: $3.00
-    *Total Amount:* $${(totalAmount + 3).toFixed(2)}
+    Delivery fee: $4.00
+    *Total Amount:* $${total}
   `;
 
     const encodedMessage = encodeURIComponent(message);
     const phoneNumber = '9613581592';  
-    return `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+    // return `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
 };

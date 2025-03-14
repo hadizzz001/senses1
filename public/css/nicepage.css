@@ -135,8 +135,8 @@
   .fr-view .fr-text-gray {
     color: #AAA !important; }
   .fr-view .fr-text-bordered {
-    border-top: solid 1px #0E3530;
-    border-bottom: solid 1px #0E3530;
+    border-top: solid 1px #ebebd3;
+    border-bottom: solid 1px #ebebd3;
     padding: 10px 0; }
   .fr-view .fr-text-spaced {
     letter-spacing: 1px; }
@@ -18804,7 +18804,7 @@ aside .u-categories.u-categories-vertical ul {
 	large image loads on top of it
 */
 .pswp__img--placeholder--blank {
-  background: #0E3530;
+  background: #ebebd3;
 }
 .pswp--ie .pswp__img {
   width: 100% !important;

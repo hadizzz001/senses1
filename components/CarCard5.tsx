@@ -1,15 +1,12 @@
 "use client";
-
-import Image from "next/image";
-import { TempProps } from "../types";
-import Link from "next/link";
-import { useState, useEffect, useRef } from 'react';
+ 
+import { TempProps } from "../types"; 
 
 interface CarCardProps {
     temp: TempProps;
 }
 
-const CarCard = ({ temp }: CarCardProps) => {
+const CarCard5 = ({ temp }: CarCardProps) => {
     const { _id, title, price,discount, img } = temp;
 
     return (
@@ -26,8 +23,8 @@ const CarCard = ({ temp }: CarCardProps) => {
                                                 src={img[0]}
                                                 style={{
                                                     borderRadius: '20px',
-                                                    width: '300px',
-                                                    height: '350px',
+                                                    width: '100px',
+                                                    height: '150px',
                                                     objectFit: 'cover'
                                                 }}
                                             />
@@ -42,11 +39,8 @@ const CarCard = ({ temp }: CarCardProps) => {
                                             className="br_text-current br_no-underline"
                                         >
                                             <h2 className="text-sm font-bold myBB  py-1">{title}</h2>
-                                            <div className="price-container br_inline-flex br_flex-wrap br_gap-x-2 br_items-baseline apex:br_text-white group-[.centered]/tile:br_justify-center">
-  <span className="old-price text-left text-sm   py-1   br_line-through myBB">${price} USD</span>
-  <span className="old-price text-left text-sm bg-gray-500 py-1 rounded br_text-gray-500  ">${discount} USD</span>
-</div>
-
+                                            <span className="old-price text-left text-sm   py-1   br_line-through myBB">${price} USD</span>
+                                            <span className="old-price text-left text-sm bg-gray-500 py-1 rounded br_text-gray-500 ml-2 ">${discount} USD</span>
 
                                         </a>
                                     </h3>
@@ -60,4 +54,4 @@ const CarCard = ({ temp }: CarCardProps) => {
     );
 }
 
-export default CarCard;
+export default CarCard5;

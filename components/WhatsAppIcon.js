@@ -40,7 +40,7 @@ const WhatsAppIcon = () => {
       <g
         id="Color-"
         transform="translate(-700.000000, -360.000000)"
-        fill="#CD998E"
+        fill="#8ea976"
       >
         {" "}
         <path
