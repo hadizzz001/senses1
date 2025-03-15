@@ -60,7 +60,7 @@ export default function RootLayout({
     property="og:description"
   />
   <meta
-    content="hthttps://res.cloudinary.com/dxlfxsimy/image/upload/v1741868275/yo8n9xcs5biqz6mixpp6.jpg"
+    content="https://res.cloudinary.com/dxlfxsimy/image/upload/v1741868275/yo8n9xcs5biqz6mixpp6.jpg"
     name=""
     property="og:image"
   />
