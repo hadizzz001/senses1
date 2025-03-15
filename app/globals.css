@@ -717,6 +717,13 @@ header {
     top: 4.5em !important;
   }
 
+  .pageHeaderMenuOverlay {
+    top:2em !important;
+}
+  .pageHeaderMenuOverlay__close {
+    top:3em !important;
+}
+
 
   #PageMenuPreHeader {
     box-shadow: 1px 1px 20px #0000001f;
