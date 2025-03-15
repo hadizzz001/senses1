@@ -4,7 +4,7 @@ import { useBooleanValue } from '../app/context/CartBoolContext';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
-import CarCard5  from '../components/CarCard5';
+import CarCard5 from '../components/CarCard5';
 
 const Cart = () => {
     const { cart, removeFromCart, quantities, subtotal, addToCart } = useCart();
@@ -12,25 +12,13 @@ const Cart = () => {
     const { isBooleanValue, setBooleanValue } = useBooleanValue();
     const [errors, setErrors] = useState({});
     const [allTemp2, setAllTemps2] = useState();
+    const [maxStock, setMaxStock] = useState({}); // Store max stock for each item
 
     const handleRemoveFromCart = (itemId) => {
         removeFromCart(itemId);
     };
 
-    const handleQuantityChange = (itemId, quantity) => {
-        if (quantity < 1) return; // Prevent quantity from being zero or negative
-        addToCart(
-            cart.find((item) => item._id === itemId),
 
-            quantity
-        );
-
-        // Update localQuantities immediately
-        setLocalQuantities((prevQuantities) => ({
-            ...prevQuantities,
-            [itemId]: quantity,
-        }));
-    };
 
     useEffect(() => {
         setLocalQuantities(quantities);
@@ -71,6 +59,55 @@ const Cart = () => {
     }, []); // Runs only when `cat` changes and is defined
 
 
+
+
+
+
+    useEffect(() => {
+        const fetchStock = async () => {
+            const updatedStock = {};
+            for (const item of cart) {
+                try {
+                    const response = await fetch(`/api/stock/${item._id}`);
+                    const data = await response.json();
+                    updatedStock[item._id] = parseInt(data.stock, 10);
+                } catch (error) {
+                    console.error("Error fetching stock:", error);
+                    updatedStock[item._id] = 1; // Default to 1 if fetch fails
+                }
+            }
+            setMaxStock(updatedStock);
+        };
+
+        fetchStock();
+    }, [cart]);
+
+
+
+
+    const handleQuantityChange = (itemId, quantity) => {
+        let newQuantity = parseInt(quantity, 10);
+
+        if (isNaN(newQuantity) || newQuantity < 1) {
+            newQuantity = 1; // Prevent negative or zero values
+        } else if (newQuantity > (maxStock[itemId] || 1)) {
+            newQuantity = maxStock[itemId]; // Limit to max stock
+        }
+
+        addToCart(
+            cart.find((item) => item._id === itemId),
+            newQuantity
+        );
+
+        setLocalQuantities((prevQuantities) => ({
+            ...prevQuantities,
+            [itemId]: newQuantity,
+        }));
+    };
+
+
+
+
     return (
         <>
             <div>
@@ -86,7 +123,7 @@ const Cart = () => {
             <div className="Checkout">
                 <div id="cartid2" className="MiniCart_Cart" style={{ zIndex: "99999999" }}>
                     <div className="MiniCart_Cart_Heading br_text-grey-500 mt-2">
-                      
+
                         <span className="myNewC">Your shopping bag</span>
                         <button
                             slot="close-button"
@@ -124,10 +161,12 @@ const Cart = () => {
                                                         <span className="myNewC">Qty:</span>
 
                                                         <input
-                                                            type="text"
-                                                            className='myNewC'
+                                                            type="number"
+                                                            className="myNewC"
                                                             value={localQuantities[obj._id] || 1}
                                                             onChange={(e) => handleQuantityChange(obj._id, e.target.value)}
+                                                            min="1"
+                                                            max={maxStock[obj._id] || 1} 
                                                         />
 
 
@@ -186,36 +225,36 @@ const Cart = () => {
                                 </div>
                             </div>
 
-                             <div className="ProductTile-SliderContainer ProductTile-SliderContainer--YMAL" data-product-list-category="ymal-slider">
-                                        <div className="ProductTile-SliderContainer-Title br_text-3xl-serif br_text-white myNewC">You might also like:</div>
-                                        {allTemp2 && allTemp2?.length > 0 ? (
-                                            <section style={{ maxWidth: "100%" }}>
-                                                <Swiper spaceBetween={20} loop modules={[Autoplay]} autoplay={{
-                                                    delay: 2000,
-                                                    stopOnLastSlide: false,
-                                                    reverseDirection: true
-                                                }} breakpoints={{
-                                                    150: {
-                                                        slidesPerView: 2,
-                                                    },
-                                                    768: {
-                                                        slidesPerView: 2,
-                                                    },
-                                                }}>
-                                                    <div className='home__cars-wrapper'>
-                                                        {allTemp2.map((temp) => (
-                                                            <SwiperSlide key={temp._id}><CarCard5 temp={temp} /></SwiperSlide>
-                                                        ))}
-                                                    </div>
-                                                </Swiper>
-                                            </section>
-                                        ) : (
-                                            <div className='home___error-container'>
-                                                <h2 className='text-black text-xl dont-bold'>...</h2>
+                            <div className="ProductTile-SliderContainer ProductTile-SliderContainer--YMAL" data-product-list-category="ymal-slider">
+                                <div className="ProductTile-SliderContainer-Title br_text-3xl-serif br_text-white myNewC">You might also like:</div>
+                                {allTemp2 && allTemp2?.length > 0 ? (
+                                    <section style={{ maxWidth: "100%" }}>
+                                        <Swiper spaceBetween={20} loop modules={[Autoplay]} autoplay={{
+                                            delay: 2000,
+                                            stopOnLastSlide: false,
+                                            reverseDirection: true
+                                        }} breakpoints={{
+                                            150: {
+                                                slidesPerView: 2,
+                                            },
+                                            768: {
+                                                slidesPerView: 2,
+                                            },
+                                        }}>
+                                            <div className='home__cars-wrapper'>
+                                                {allTemp2.map((temp) => (
+                                                    <SwiperSlide key={temp._id}><CarCard5 temp={temp} /></SwiperSlide>
+                                                ))}
                                             </div>
-                                        )}
+                                        </Swiper>
+                                    </section>
+                                ) : (
+                                    <div className='home___error-container'>
+                                        <h2 className='text-black text-xl dont-bold'>...</h2>
                                     </div>
-                                
+                                )}
+                            </div>
+
                         </div>
 
                         <a className="Common_Button Common_Button--short MiniCart_Cart_CtaButton" href="/checkout" rel="nofollow">

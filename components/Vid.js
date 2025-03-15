@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 const ResponsiveVideo = () => {
   const router = useRouter();
   return (
-    <div className="flex flex-col items-center justify-center w-full mt-5"> 
+    <div className="flex flex-col items-center justify-center w-full "> 
 
       {/* Video Container */}
       <div className="relative w-[380px] h-[500px] md:w-[1200px] md:h-[600px] rounded-2xl overflow-hidden md:mt-20">

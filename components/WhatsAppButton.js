@@ -9,19 +9,69 @@ const WhatsAppButton = ({ inputs, items, total }) => {
  
     
 
-    const createOrder =  () => { 
+    // const createOrder =  () => { 
         
-        fetch('api/sendOrder', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                items,
-                inputs 
-            })
-        });
+    //     fetch('api/sendOrder', {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify({
+    //             items,
+    //             inputs,
+    //             total
+    //         })
+    //     });
+    // };
+
+    const createOrder = async () => {
+        try {
+            // Step 1: Decrease stock for each product in the order
+            for (const item of items) {
+                const quantityToDecrease = parseInt(item.quantity, 10); // Convert quantity to integer
+    
+                const response = await fetch(`/api/stock/${item._id}`, {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ qty: quantityToDecrease }),
+                });
+    
+                const result = await response.json();
+    
+                if (!response.ok) {
+                    throw new Error(result.error || "Failed to update stock");
+                }
+            }
+    
+            // Step 2: If stock update is successful, create the order
+            const orderResponse = await fetch("/api/sendOrder", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    items,
+                    inputs,
+                    total,
+                }),
+            });
+    
+            if (!orderResponse.ok) {
+                throw new Error("Failed to create order");
+            }
+    
+            console.log("Order created successfully!");
+            alert("Order placed successfully!");
+    
+        } catch (error) {
+            console.error("Error processing order:", error);
+            alert(error.message || "Something went wrong");
+        }
     };
+    
+    
 
     const handleClick = async () => {
         if (!validateInputs(inputs)) {

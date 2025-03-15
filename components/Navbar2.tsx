@@ -142,13 +142,7 @@ function NavBar() {
             "\n                .MiniCart_Slider_Overlay {\n                    width: 100vw;\n                    height: 100vh;\n                    position: fixed;\n                    top: 0;\n                    bottom: 0;\n                    left: 0;\n                    right: 0;\n                    z-index: 1000000000;\n                    background-color: #000;\n                    opacity: 0;\n                    pointer-events: none;\n                }\n                .MiniCart_Slider_Overlay-visible {\n                    opacity: 0.4;\n                    pointer-events: all;\n                    transition: opacity 200ms ease-in;\n                }\n                .MiniCart_Slider {\n                    position: fixed;\n                    right: 0;\n                    bottom: 0;\n                    top: 0;\n                    width: 435px;\n                    max-width: 90vw;\n                    z-index: 1000000000;\n                    opacity: 0;\n                    pointer-events: none;\n                    transform: translateX(100%);\n                    transition: all 200ms linear;\n                }\n                .MiniCart_Slider-visible {\n                    transform: translateX(0);\n                    transition: all 500ms linear;\n                    opacity: 1;\n                    pointer-events: all;\n                }\n                .MiniCart_Slider_CloseButton {\n                    position: absolute;\n                    right: 0;\n                    top: 0;\n                    z-index: 200;\n                }\n            "
         }}
       />
-      <style
-        dangerouslySetInnerHTML={{
-          __html:
-            "\n    @media (max-width: 720px) {\n    #PageMenuPreHeader{\n      box-shadow: 1px 1px 20px #0000001f;\n    background: #0d0d0dcc;\n    backdrop-filter: saturate(180%) blur(2rem);\n    -webkit-backdrop-filter: saturate(180%) blur(2rem);\n    border: 1px solid rgba(229, 231, 235, .2);\n    border-bottom-left-radius: 20px;\n    border-bottom-right-radius: 20px;\n    height: 75px;\n}\n"
-        }}
-      />
-
+ 
 
       <Cart />
 

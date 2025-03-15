@@ -680,6 +680,13 @@ header {
 
 
 
+.pageHeaderMenuOverlay__close{
+  position: fixed !important;
+  top: 3em !important;
+  background-color: #222 !important;
+}
+
+
 @media (max-width: 720px) {
   #PageMenuPreHeader {
     position: sticky;
@@ -690,6 +697,37 @@ header {
   #filterId1 { 
     z-index: 99999999999999999;
   }
+
+  .pageHeaderMenuOverlay__close{ 
+    top: 1em !important; 
+  }
+
+  #page-header-homepage-1{
+    top: 5em;
+  }
+  #hamburger{
+    top: 3em;
+  }
+  .mobileNewsletter{
+    top:4.3em !important
+  }
+  #page-header-search-1{
+    position: fixed;
+    right: 1em;
+    top: 4.5em !important;
+  }
+
+
+  #PageMenuPreHeader {
+    box-shadow: 1px 1px 20px #0000001f;
+    background: #0d0d0dcc;
+    backdrop-filter: saturate(180%) blur(2rem);
+    -webkit-backdrop-filter: saturate(180%) blur(2rem);
+    border: 1px solid rgba(229, 231, 235, .2);
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    height: 100px;
+}
 }
 
 #myUniD {
@@ -746,3 +784,9 @@ header {
 input{
   color: #222 !important;
 }
+
+
+.pageHeaderMenuOverlay.open{
+  position: fixed;
+}
+

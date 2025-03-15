@@ -24,8 +24,8 @@ const Page = () => {
   const search = searchParams.get('id');
   const custom = searchParams.get('custom');
   const imgg = searchParams.get('imgg');
-  let imgs, title, price, desc, cat, brand, sub ,discount
-  const { cart, addToCart } = useCart();
+  let imgs, title, price, desc, cat, brand, sub, discount, id, stock
+  const { cart, addToCart, quantities } = useCart();
   const { isBooleanValue, setBooleanValue } = useBooleanValue();
   const targetRef = useRef(null);
   const [errors, setErrors] = useState({});
@@ -34,6 +34,7 @@ const Page = () => {
   const router = useRouter();
   const [allTemp1, setAllTemps1] = useState();
   const [allTemp2, setAllTemps2] = useState();
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,13 +56,15 @@ const Page = () => {
 
 
   if (allTemp1) {
-    imgs = allTemp1.img; 
+    id = allTemp1._id;
+    imgs = allTemp1.img;
     brand = allTemp1.brand;
     cat = allTemp1.category;
     title = allTemp1.title;
     price = allTemp1.price;
     discount = allTemp1.discount;
     desc = allTemp1.description;
+    stock = allTemp1.stock;
   }
 
 
@@ -152,11 +155,11 @@ const Page = () => {
     router.push('/checkout');
   };
 
- 
- 
+
+
 
   return (
-    <> 
+    <>
       <style
         dangerouslySetInnerHTML={{
           __html: "\n\n.uploadcare--widget__button, .uploadcare--widget__button:hover {\n\tpadding: 10px;\n\tbackground-color: #d7d7d7; \n  color: #212529;\n  width:100%;\n}\n\n.uploadcare--widget__button:hover {\n\tbackground-color: #c1c1c1;\n  \n}\n\n\n"
@@ -227,7 +230,7 @@ const Page = () => {
                     </h1>
                     <p className='mb-2 myNewC'>
                       Category: {cat}
-                    </p> 
+                    </p>
                     <p className='mb-2 myNewC br_line-through'>
                       ${price}
                     </p>
@@ -239,7 +242,7 @@ const Page = () => {
 
 
 
-  
+
 
 
 
@@ -251,7 +254,7 @@ const Page = () => {
                   <div className="ProductSelector_IntroBlurb">
                     <span className="ProvidersIfSelectedProductMatchesFilter">
                       <p
-className='myNewC'
+                        className='myNewC'
                         dangerouslySetInnerHTML={{ __html: desc }}
                       /><br />
                     </span>
@@ -275,29 +278,33 @@ className='myNewC'
                       </>
                     ) : (
                       <div>
-                         
-                          <form onSubmit={handleSubmit}>
+
+                        <form onSubmit={handleSubmit}>
+                          <div className="">
+                            <QuantitySelector initialQty={quantity} onChange={setQuantity} productId={id} />
+                            <div className=""></div>
                             <div className="">
-                              <QuantitySelector initialQty={quantity} onChange={setQuantity} />
-                              <div className=""></div>
-                              <div className="">
-                                <span className="ProvidersSingleProduct--selected">
-                                  <button type="submit" className="AddToCart HtmlProductAddToCart" style={{ borderRadius: "0" }}>
-                                    <span>ADD TO BAG</span>
-                                  </button>
-                                </span>
-                              </div>
-                              <div className=""></div>
+                              <span className="ProvidersSingleProduct--selected">
+                              {stock > 0 ? (
+  <button type="submit" className="AddToCart HtmlProductAddToCart" style={{ borderRadius: "0" }}>
+    <span>ADD TO BAG</span>
+  </button>
+) : (
+  <p className='mt-10' style={{ color: "#222", fontSize: "24px" }}>Out of Stock</p>
+)}
+                              </span>
                             </div>
-                          </form>
-                   
+                            <div className=""></div>
+                          </div>
+                        </form>
+
                       </div>
                     )}
                     <br />
                   </div>
                   <span className="ProvidersIfSelectedProductMatchesFilter">
                   </span>
-                  
+
                 </section>
               </div>
               <span className="ProvidersIfSelectedProductMatchesFilter">
