@@ -23,10 +23,10 @@ export default function Home() {
       <div className="u-align-center u-container-style u-group u-group-1">
         <div className="u-container-layout u-valign-middle">
            
-          <h2 className="u-text u-text-1" style={{fontFamily: '"Manrope", sans-serif',fontWeight: "bolder",marginBottom: "1em",fontSize: "3em"}}>About Company</h2>
-          <p className="u-text u-text-2" style={{fontFamily: 'Frank Ruhl Libre, "PT Serif", "Noto Serif", "Noto Serif JP", "Noto Serif KR", "Noto Serif SC", "Noto Serif TC", ui-serif, Georgia, Cambria, Times New Roman, Times, serif',fontSize: "1.2rem",lineHeight: "2rem",fontWeight:"400"}}>
+          <h2 className="u-text u-text-1 myBB" style={{fontFamily: '"Manrope", sans-serif',fontWeight: "bolder",marginBottom: "1em",fontSize: "3em"}}>About Company</h2>
+          <p className="u-text u-text-2" style={{fontFamily: 'Frank Ruhl Libre, "PT Serif", "Noto Serif", "Noto Serif JP", "Noto Serif KR", "Noto Serif SC", "Noto Serif TC", ui-serif, Georgia, Cambria, Times New Roman, Times, serif',fontSize: "1.2rem",lineHeight: "2rem",fontWeight:"400", color:"#222"}}>
             {" "}
-            Senses is your ultimate destination for stylish shoes and more, combining comfort, quality, and trendsetting designs. We bring you a curated collection that blends fashion with functionality, ensuring you step out in confidence every day. Whether you're looking for classic footwear or the latest styles, Abbasbaba has something for everyone.
+            Senses is a skincare brand dedicated to providing high-quality, nourishing creams that enhance your natural beauty and rejuvenate your skin.
           </p>
  
         </div>

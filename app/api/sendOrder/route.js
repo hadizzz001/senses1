@@ -15,8 +15,7 @@ export async function POST(request) {
         const result = await collection.insertOne({
             userInfo: items,
             cartItems: inputs,
-            total: total,
-            createdAt: new Date() // Optional: Add a timestamp
+            total: total, 
         });
 
         return NextResponse.json({ success: true, insertedId: result.insertedId }); // Return success response
