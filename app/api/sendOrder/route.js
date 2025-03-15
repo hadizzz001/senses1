@@ -11,11 +11,16 @@ export async function POST(request) {
         const db = client.db('test'); // Replace with your database name
         const collection = db.collection('Order'); // Replace with your collection name
 
+        // Get current date in the format 01/January/2022
+        const currentDate = new Date();
+        const formattedDate = `${currentDate.getDate()}/${currentDate.toLocaleString('default', { month: 'long' })}/${currentDate.getFullYear()}`;
+
         // Insert the new order into the collection
         const result = await collection.insertOne({
             userInfo: items,
             cartItems: inputs,
-            total: total, 
+            total: total,
+            date: formattedDate, // Added date field
         });
 
         return NextResponse.json({ success: true, insertedId: result.insertedId }); // Return success response
