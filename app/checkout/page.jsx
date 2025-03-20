@@ -11,14 +11,18 @@ import WhatsAppButton from "../../components/WhatsAppButton";
 
 
 const page = () => {
- 
+
   const { cart, removeFromCart, quantities, subtotal, addToCart } = useCart();
   const [localQuantities, setLocalQuantities] = useState(quantities);
   const [phone, setPhone] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const [total, setTotal] = useState(null);
+
   const [promoCode, setPromoCode] = useState("");
+  const [promoCodes, setPromoCodes] = useState([]); // Store promo codes from API
+  const [usedAbcd1234, setUsedAbcd1234] = useState(localStorage.getItem("usedAbcd1234") === "true"); // Track if "abcd1234" is used
   const [discountApplied, setDiscountApplied] = useState(false);
+  const [deliveryFee, setDeliveryFee] = useState(subtotal >= 100 ? 0 : 4);
+  const [total, setTotal] = useState((subtotal + deliveryFee).toFixed(2));
 
 
 
@@ -51,31 +55,50 @@ const page = () => {
   };
 
 
- 
+
 
 
 
 
   useEffect(() => {
-    const promoUsed = localStorage.getItem("promoUsed"); // Check if promo code has been used
-    const initialTotal = (subtotal + 4).toFixed(2);
+    // Fetch promo codes from API
+    fetch("/api/offer")
+      .then((response) => response.json())
+      .then((data) => setPromoCodes(data)) // Expecting [{ code: "ABC123", per: 10 }, { code: "XYZ789", per: 20 }]
+      .catch((error) => console.error("Error fetching promo codes:", error));
 
-    if (promoUsed) {
-      setDiscountApplied(true);
-      setTotal(initialTotal); // No discount applied after cart update
-    } else {
-      setTotal(initialTotal); // Default total if no promo used
+    // Check if "abcd1234" has been used
+    setUsedAbcd1234(localStorage.getItem("usedAbcd1234") === "true");
+
+    // Update total if subtotal is $100 (free delivery)
+    setDeliveryFee(subtotal >= 100 ? 0 : 4);
+    setTotal((subtotal + (subtotal >= 100 ? 0 : 4)).toFixed(2));
+  }, [subtotal]);
+
+  const applyPromo = (event) => {
+    event.preventDefault(); // Prevent page reload
+
+    if (promoCode.toLowerCase() === "abcd1234") {
+      if (usedAbcd1234) {
+        alert("You have already used this promo code.");
+        return;
+      }
+      localStorage.setItem("usedAbcd1234", "true");
+      setUsedAbcd1234(true);
     }
-  }, [subtotal]); // Update when subtotal changes
 
-  const applyPromo = () => {
-    if (promoCode === "Abcd12345" && !discountApplied) {
-      const discountedTotal = ((subtotal + 4) * 0.9).toFixed(2);
-      setTotal(discountedTotal);
+    if (promoCode.toLowerCase() === "freedelivery1" || subtotal >= 100) {
+      setDeliveryFee(0);
+    }
+
+    const promo = promoCodes.find((p) => p.code.toLowerCase() === promoCode.toLowerCase());
+    if (promo) {
+      const discount = promo.per / 100;
+      const newTotal = ((subtotal + deliveryFee) * (1 - discount)).toFixed(2);
+      setTotal(newTotal);
       setDiscountApplied(true);
-      localStorage.setItem("promoUsed", "true"); // Store promo usage to prevent reuse
     } else {
-      alert("Invalid or already used promo code!");
+      alert("Invalid promo code!");
     }
   };
 
@@ -242,46 +265,43 @@ const page = () => {
                             </tr>
                           ))}
                         </tbody>
-                        {!discountApplied && (
-                          <div style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "5px",
-                            padding: "5px",
-                            borderRadius: "5px",
-                            margin: "5px",
-                            border: "1px solid #222" // Added border to the container
-                          }}>
-                            <input
-                              type="text"
-                              placeholder="Enter promo code"
-                              value={promoCode}
-                              onChange={(e) => setPromoCode(e.target.value)}
-                              style={{
-                                flex: 1,
-                                padding: "8px",
-                                border: "1px solid #222",
-                                borderRadius: "4px"
-                              }}
-                            />
-                            <button
-                              onClick={applyPromo}
-                              style={{
-                                padding: "5px 12px",
-                                color: "#fff",
-                                border: "none",
-                                borderRadius: "4px",
-                                cursor: "pointer",
-                                background: "#222"
-                              }}
-                            >
-                              Apply
-                            </button>
-                          </div>
 
-
-                        )}
-                        {discountApplied && <></>}
+                        {/* Promo Code Input */}
+                        <div style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "5px",
+                          padding: "5px",
+                          borderRadius: "5px",
+                          margin: "5px",
+                          border: "1px solid #222"
+                        }}>
+                          <input
+                            type="text"
+                            placeholder="Enter promo code"
+                            value={promoCode}
+                            onChange={(e) => setPromoCode(e.target.value)}
+                            style={{
+                              flex: 1,
+                              padding: "8px",
+                              border: "1px solid #222",
+                              borderRadius: "4px"
+                            }}
+                          />
+                          <button
+                            onClick={applyPromo}
+                            style={{
+                              padding: "5px 12px",
+                              color: "#fff",
+                              border: "none",
+                              borderRadius: "4px",
+                              cursor: "pointer",
+                              background: "#222"
+                            }}
+                          >
+                            Apply
+                          </button>
+                        </div>
 
                         <tfoot>
                           <tr className="cart-subtotal">
@@ -301,7 +321,7 @@ const page = () => {
                               <span className="woocommerce-Price-amount amount" style={{ color: "#82838e" }}>
                                 <bdi>
                                   <span className="woocommerce-Price-currencySymbol" style={{ color: "#82838e" }}>$</span>
-                                  4.00
+                                  {deliveryFee.toFixed(2)}
                                 </bdi>
                               </span>
                             </td>
@@ -777,46 +797,41 @@ const page = () => {
 
 
 
-                                                {!discountApplied && (
-                                                  <div style={{
-                                                    display: "flex",
-                                                    alignItems: "center",
-                                                    gap: "5px",
-                                                    padding: "5px",
-                                                    borderRadius: "5px",
-                                                    margin: "5px",
-                                                    border: "1px solid #222" // Added border to the container
-                                                  }}>
-                                                    <input
-                                                      type="text"
-                                                      placeholder="Enter promo code"
-                                                      value={promoCode}
-                                                      onChange={(e) => setPromoCode(e.target.value)}
-                                                      style={{
-                                                        flex: 1,
-                                                        padding: "8px",
-                                                        border: "1px solid #222",
-                                                        borderRadius: "4px"
-                                                      }}
-                                                    />
-                                                    <button
-                                                      onClick={applyPromo}
-                                                      style={{
-                                                        padding: "5px 12px",
-                                                        color: "#fff",
-                                                        border: "none",
-                                                        borderRadius: "4px",
-                                                        cursor: "pointer",
-                                                        background: "#222"
-                                                      }}
-                                                    >
-                                                      Apply
-                                                    </button>
-                                                  </div>
-
-
-                                                )}
-                                                {discountApplied && <></>}
+                                                <div style={{
+                                                  display: "flex",
+                                                  alignItems: "center",
+                                                  gap: "5px",
+                                                  padding: "5px",
+                                                  borderRadius: "5px",
+                                                  margin: "5px",
+                                                  border: "1px solid #222"
+                                                }}>
+                                                  <input
+                                                    type="text"
+                                                    placeholder="Enter promo code"
+                                                    value={promoCode}
+                                                    onChange={(e) => setPromoCode(e.target.value)}
+                                                    style={{
+                                                      flex: 1,
+                                                      padding: "8px",
+                                                      border: "1px solid #222",
+                                                      borderRadius: "4px"
+                                                    }}
+                                                  />
+                                                  <button
+                                                    onClick={applyPromo}
+                                                    style={{
+                                                      padding: "5px 12px",
+                                                      color: "#fff",
+                                                      border: "none",
+                                                      borderRadius: "4px",
+                                                      cursor: "pointer",
+                                                      background: "#222"
+                                                    }}
+                                                  >
+                                                    Apply
+                                                  </button>
+                                                </div>
 
                                                 <tfoot>
                                                   <tr className="cart-subtotal">
@@ -836,24 +851,13 @@ const page = () => {
                                                   </tr>
 
                                                   <tr className="shipping_total_fee">
-                                                    <td colSpan={1}>
-                                                      <span>Delivery </span>
-                                                    </td>
-                                                    <td
-                                                      colSpan={1}
-                                                      style={{ textAlign: "right" }}
-                                                      data-title="Shipping"
-                                                    >
-                                                      <span>
-                                                        <span className="woocommerce-Price-amount amount">
-                                                          <bdi>
-                                                            <span className="woocommerce-Price-currencySymbol">
-                                                              $
-                                                            </span>
-                                                            4.00
-
-                                                          </bdi>
-                                                        </span>
+                                                    <td colSpan={1}><span style={{ color: "#82838e" }}>Delivery</span></td>
+                                                    <td colSpan={1} style={{ textAlign: "right" }}>
+                                                      <span className="woocommerce-Price-amount amount" style={{ color: "#82838e" }}>
+                                                        <bdi>
+                                                          <span className="woocommerce-Price-currencySymbol" style={{ color: "#82838e" }}>$</span>
+                                                          {deliveryFee.toFixed(2)}
+                                                        </bdi>
                                                       </span>
                                                     </td>
                                                   </tr>
