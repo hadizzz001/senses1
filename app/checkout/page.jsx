@@ -11,8 +11,7 @@ import WhatsAppButton from "../../components/WhatsAppButton";
 
 
 const page = () => {
-  const [selectedOption, setSelectedOption] = useState(7.5);
-  const [allTemp, setTemp] = useState()
+ 
   const { cart, removeFromCart, quantities, subtotal, addToCart } = useCart();
   const [localQuantities, setLocalQuantities] = useState(quantities);
   const [phone, setPhone] = useState("");
@@ -52,19 +51,11 @@ const page = () => {
   };
 
 
-
-
-  useEffect(() => {
-    console.log("inputs:");
-    console.log(inputs);
-  }, [inputs]);
+ 
 
 
 
 
-
-
-  
   useEffect(() => {
     const promoUsed = localStorage.getItem("promoUsed"); // Check if promo code has been used
     const initialTotal = (subtotal + 4).toFixed(2);
@@ -88,7 +79,7 @@ const page = () => {
     }
   };
 
-  
+
 
 
 
@@ -199,98 +190,98 @@ const page = () => {
 
                     <div className="wfacp_anim wfacp_order_summary_container">
                       <table className="shop_table woocommerce-checkout-review-order-table elementor-hific">
-                      <tbody>
-  {cart?.map((obj, index) => (
-    <tr key={obj._id} className="cart_item">
-      <td className="product-name-area" style={{ display: "flex", alignItems: "center" }}>
-        {/* Product Image */}
-        <div className="product-image">
-          <div className="wfacp-pro-thumb">
-            <div className="wfacp-qty-ball" style={{ top: "-5px" }}>
-              <div className="wfacp-qty-count">
-                <span className="wfacp-pro-count">{localQuantities[obj._id]}</span>
-              </div>
-            </div>
-            <img src={obj.img[0]} width={50} height={50} alt={obj.title} />
-          </div>
-        </div>
+                        <tbody>
+                          {cart?.map((obj, index) => (
+                            <tr key={obj._id} className="cart_item">
+                              <td className="product-name-area" style={{ display: "flex", alignItems: "center" }}>
+                                {/* Product Image */}
+                                <div className="product-image">
+                                  <div className="wfacp-pro-thumb">
+                                    <div className="wfacp-qty-ball" style={{ top: "-5px" }}>
+                                      <div className="wfacp-qty-count">
+                                        <span className="wfacp-pro-count">{localQuantities[obj._id]}</span>
+                                      </div>
+                                    </div>
+                                    <img src={obj.img[0]} width={50} height={50} alt={obj.title} />
+                                  </div>
+                                </div>
 
-        {/* Product Name */}
-        <div className="product-name wfacp_summary_img_true" style={{ marginLeft: "10px", color: "#82838e" }}>
-          <span className="wfacp_order_summary_item_name" style={{  color: "#82838e" }}>
-            {obj.title}
-          </span>
-        </div>
-      </td>
+                                {/* Product Name */}
+                                <div className="product-name wfacp_summary_img_true" style={{ marginLeft: "10px", color: "#82838e" }}>
+                                  <span className="wfacp_order_summary_item_name" style={{ color: "#82838e" }}>
+                                    {obj.title}
+                                  </span>
+                                </div>
+                              </td>
 
-      {/* Price and Remove Button */}
-      <td className="product-total" style={{ color: "#82838e" }}>
-        <div className="wfacp_order_summary_item_total">
-          <span className="woocommerce-Price-amount amount" style={{  color: "#82838e" }}>
-            <bdi>
-              <span className="woocommerce-Price-currencySymbol" style={{  color: "#82838e" }}>$</span>
-              {(obj.discount * localQuantities[obj._id] || obj.discount).toFixed(2)}
-            </bdi>
-          </span>
-        </div>
+                              {/* Price and Remove Button */}
+                              <td className="product-total" style={{ color: "#82838e" }}>
+                                <div className="wfacp_order_summary_item_total">
+                                  <span className="woocommerce-Price-amount amount" style={{ color: "#82838e" }}>
+                                    <bdi>
+                                      <span className="woocommerce-Price-currencySymbol" style={{ color: "#82838e" }}>$</span>
+                                      {(obj.discount * localQuantities[obj._id] || obj.discount).toFixed(2)}
+                                    </bdi>
+                                  </span>
+                                </div>
 
-        <button 
-          className="Checkout_Cart_LineItems_LineItem_Remove" 
-          onClick={() => handleRemoveFromCart(obj._id)} 
-          style={{ position: "relative" }}
-        >
-          <span className="Checkout_Cart_LineItems_LineItem_Remove_Cross">
-            <span />
-            <span />
-          </span>
-          <span className="Checkout_Cart_LineItems_LineItem_Remove_Spinner">
-            <span />
-          </span>
-        </button>
-      </td>
-    </tr>
-  ))}
-</tbody>
-{!discountApplied && (
-  <div style={{ 
-  display: "flex", 
-  alignItems: "center", 
-  gap: "5px", 
-  padding: "5px", 
-  borderRadius: "5px", 
-  margin: "5px", 
-  border: "1px solid #222" // Added border to the container
-}}>
-  <input
-    type="text"
-    placeholder="Enter promo code"
-    value={promoCode}
-    onChange={(e) => setPromoCode(e.target.value)}
-    style={{ 
-      flex: 1, 
-      padding: "8px", 
-      border: "1px solid #222", 
-      borderRadius: "4px" 
-    }}
-  />
-  <button 
-    onClick={applyPromo} 
-    style={{ 
-      padding: "5px 12px", 
-      color: "#fff", 
-      border: "none", 
-      borderRadius: "4px", 
-      cursor: "pointer", 
-      background: "#222" 
-    }}
-  >
-    Apply
-  </button>
-</div>
+                                <button
+                                  className="Checkout_Cart_LineItems_LineItem_Remove"
+                                  onClick={() => handleRemoveFromCart(obj._id)}
+                                  style={{ position: "relative" }}
+                                >
+                                  <span className="Checkout_Cart_LineItems_LineItem_Remove_Cross">
+                                    <span />
+                                    <span />
+                                  </span>
+                                  <span className="Checkout_Cart_LineItems_LineItem_Remove_Spinner">
+                                    <span />
+                                  </span>
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                        {!discountApplied && (
+                          <div style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "5px",
+                            padding: "5px",
+                            borderRadius: "5px",
+                            margin: "5px",
+                            border: "1px solid #222" // Added border to the container
+                          }}>
+                            <input
+                              type="text"
+                              placeholder="Enter promo code"
+                              value={promoCode}
+                              onChange={(e) => setPromoCode(e.target.value)}
+                              style={{
+                                flex: 1,
+                                padding: "8px",
+                                border: "1px solid #222",
+                                borderRadius: "4px"
+                              }}
+                            />
+                            <button
+                              onClick={applyPromo}
+                              style={{
+                                padding: "5px 12px",
+                                color: "#fff",
+                                border: "none",
+                                borderRadius: "4px",
+                                cursor: "pointer",
+                                background: "#222"
+                              }}
+                            >
+                              Apply
+                            </button>
+                          </div>
 
 
-      )}
-      {discountApplied && <></>}
+                        )}
+                        {discountApplied && <></>}
 
                         <tfoot>
                           <tr className="cart-subtotal">
@@ -305,11 +296,11 @@ const page = () => {
                             </td>
                           </tr>
                           <tr className="shipping_total_fee">
-                            <td colSpan={1}><span style={{  color: "#82838e" }}>Delivery</span></td>
+                            <td colSpan={1}><span style={{ color: "#82838e" }}>Delivery</span></td>
                             <td colSpan={1} style={{ textAlign: "right" }}>
-                              <span className="woocommerce-Price-amount amount" style={{  color: "#82838e" }}>
+                              <span className="woocommerce-Price-amount amount" style={{ color: "#82838e" }}>
                                 <bdi>
-                                  <span className="woocommerce-Price-currencySymbol" style={{  color: "#82838e" }}>$</span>
+                                  <span className="woocommerce-Price-currencySymbol" style={{ color: "#82838e" }}>$</span>
                                   4.00
                                 </bdi>
                               </span>
@@ -492,7 +483,7 @@ const page = () => {
                                       <div className="wfacp-comm-form-detail clearfix">
                                         <div className="wfacp-row">
 
-                                        <p
+                                          <p
                                             className="form-row form-row-wide wfacp-form-control-wrapper wfacp-col-full  wfacp_field_required validate-required validate-email validate-email"
                                             id="billing_email_field"
                                             data-priority={110}
@@ -787,45 +778,45 @@ const page = () => {
 
 
                                                 {!discountApplied && (
-  <div style={{ 
-  display: "flex", 
-  alignItems: "center", 
-  gap: "5px", 
-  padding: "5px", 
-  borderRadius: "5px", 
-  margin: "5px", 
-  border: "1px solid #222" // Added border to the container
-}}>
-  <input
-    type="text"
-    placeholder="Enter promo code"
-    value={promoCode}
-    onChange={(e) => setPromoCode(e.target.value)}
-    style={{ 
-      flex: 1, 
-      padding: "8px", 
-      border: "1px solid #222", 
-      borderRadius: "4px" 
-    }}
-  />
-  <button 
-    onClick={applyPromo} 
-    style={{ 
-      padding: "5px 12px", 
-      color: "#fff", 
-      border: "none", 
-      borderRadius: "4px", 
-      cursor: "pointer", 
-      background: "#222" 
-    }}
-  >
-    Apply
-  </button>
-</div>
+                                                  <div style={{
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    gap: "5px",
+                                                    padding: "5px",
+                                                    borderRadius: "5px",
+                                                    margin: "5px",
+                                                    border: "1px solid #222" // Added border to the container
+                                                  }}>
+                                                    <input
+                                                      type="text"
+                                                      placeholder="Enter promo code"
+                                                      value={promoCode}
+                                                      onChange={(e) => setPromoCode(e.target.value)}
+                                                      style={{
+                                                        flex: 1,
+                                                        padding: "8px",
+                                                        border: "1px solid #222",
+                                                        borderRadius: "4px"
+                                                      }}
+                                                    />
+                                                    <button
+                                                      onClick={applyPromo}
+                                                      style={{
+                                                        padding: "5px 12px",
+                                                        color: "#fff",
+                                                        border: "none",
+                                                        borderRadius: "4px",
+                                                        cursor: "pointer",
+                                                        background: "#222"
+                                                      }}
+                                                    >
+                                                      Apply
+                                                    </button>
+                                                  </div>
 
 
-      )}
-      {discountApplied && <></>}
+                                                )}
+                                                {discountApplied && <></>}
 
                                                 <tfoot>
                                                   <tr className="cart-subtotal">
@@ -912,8 +903,8 @@ const page = () => {
 
 
                     {total !== null && (
-        <WhatsAppButton inputs={inputs} items={cart} total={total} />
-      )}
+                      <WhatsAppButton inputs={inputs} items={cart} total={total} />
+                    )}
 
 
 

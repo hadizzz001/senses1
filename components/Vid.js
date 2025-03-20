@@ -9,7 +9,7 @@ const ResponsiveVideo = () => {
     <div className="flex flex-col items-center justify-center w-full "> 
 
       {/* Video Container */}
-      <div className="relative w-[380px] h-[500px] md:w-[1200px] md:h-[600px] rounded-2xl overflow-hidden md:mt-20">
+      <div className="relative w-[380px] h-[500px] md:w-[1200px] md:h-[600px] rounded-2xl overflow-hidden md:mt-[150px]">
         <video
           className="w-full h-full object-cover"
           autoPlay

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
-import CarCard6 from './CarCard6'; 
+import CarCard from './CarCard'; // Ensure this component exists
 import { useRouter } from "next/navigation";
 
 const YourComponent = () => {
@@ -14,10 +14,12 @@ const YourComponent = () => {
 
     const fetchCategories = async () => {
         try {
-            const response = await fetch('/api/subcat', { cache: 'no-store' });
+            const response = await fetch('/api/products', { cache: 'no-store' });
             if (response.ok) {
                 const data = await response.json();
-                setAllTemps(data);
+                // Filter items where title contains "box"
+                const filteredData = data.filter(item => item.title.toLowerCase().includes("box"));
+                setAllTemps(filteredData);
             } else {
                 console.error('Failed to fetch categories');
             }
@@ -25,6 +27,7 @@ const YourComponent = () => {
             console.error('Error fetching categories:', error);
         }
     };
+    
 
 
 
@@ -58,7 +61,7 @@ const YourComponent = () => {
                                     <button
                                     id='mybbtn' 
                                     className='myBB' 
-                                    onClick={() => router.push("/shop")}
+                                    onClick={() => router.push("/search?cat=yes")}
                                     >
                                         Shop All
                                     </button>
@@ -86,7 +89,7 @@ const YourComponent = () => {
                                             <div className="home__cars-wrapper">
                                                 {allTemps.map((temp) => (
                                                     <SwiperSlide key={temp.id}>
-                                                        <CarCard6 temp={temp} />
+                                                        <CarCard temp={temp} />
                                                     </SwiperSlide>
                                                 ))}
                                             </div>

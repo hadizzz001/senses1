@@ -18,9 +18,14 @@
     "mongodb": "^6.13.0",
     "next": "14.2.24",
     "react": "^18",
+    "react-bootstrap": "^2.10.9",
     "react-dom": "^18",
+    "react-hover-image": "^2.0.1",
+    "react-image-magnify": "^2.7.4",
     "react-responsive-carousel": "^3.2.23",
+    "react-slick": "^0.30.3",
     "resend": "^4.1.2",
+    "slick-carousel": "^1.8.1",
     "swiper": "^11.2.4"
   },
   "devDependencies": {

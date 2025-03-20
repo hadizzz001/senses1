@@ -231,12 +231,7 @@ const Page = () => {
                     <p className='mb-2 myNewC'>
                       Category: {cat}
                     </p>
-                    <p className='mb-2 myNewC br_line-through'>
-                      ${price}
-                    </p>
-                    <p className='mb-2 myNewC'>
-                      ${discount}
-                    </p>
+
                   </span>
                   <div className="ApexPriceAndFreeShippingWrapper">
 
@@ -258,6 +253,11 @@ const Page = () => {
                         dangerouslySetInnerHTML={{ __html: desc }}
                       /><br />
                     </span>
+                    <div className="flex items-center space-x-2">
+  <h1 className="mb-2 myNewC br_line-through font-bold text-lg">${price}</h1>
+  <h1 className="mb-2 myNewC font-bold text-lg">${discount}</h1>
+</div>
+
                   </div>
                   <div className="bagsFeaturesGrid__gridWrapper">
                     {isInCart ? (
@@ -285,13 +285,13 @@ const Page = () => {
                             <div className=""></div>
                             <div className="">
                               <span className="ProvidersSingleProduct--selected">
-                              {stock > 0 ? (
-  <button type="submit" className="AddToCart HtmlProductAddToCart" style={{ borderRadius: "0" }}>
-    <span>ADD TO BAG</span>
-  </button>
-) : (
-  <p className='mt-10' style={{ color: "#222", fontSize: "24px" }}>Out of Stock</p>
-)}
+                                {stock > 0 ? (
+                                  <button type="submit" className="AddToCart HtmlProductAddToCart" style={{ borderRadius: "0" }}>
+                                    <span>ADD TO BAG</span>
+                                  </button>
+                                ) : (
+                                  <p className='mt-10' style={{ color: "#222", fontSize: "24px" }}>Out of Stock</p>
+                                )}
                               </span>
                             </div>
                             <div className=""></div>

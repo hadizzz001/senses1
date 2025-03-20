@@ -1,53 +1,17 @@
 "use client"
+  
+import React from 'react'  
+import {sendEmail1} from '../app/api/sendEmail1/sendEmail1'
+
+export default function Rate() {   
  
-import { useState, useEffect, useRef } from "react";
-import axios from "axios"; 
-
-export default function Rate() {  
-    const [inputs, setInputs] = useState({});
-    const [active, setActive] = useState(false)
-    const [values, setValues] = useState(0);
-
  
+    const handleChange = (e) => {  
 
-    useEffect(() => {
-        setInputs((prevState) => ({ ...prevState, stars: values + "" }));
-    }, [values]);
-
-    const handleSubmit = (e) => {
-        if (typeof window !== "undefined") {
-            e.preventDefault();
-            setActive(true)
-            axios
-                .post("/api/rate", inputs)
-                .then((res) => { 
-
-                    window.location.replace("/");
-                })
-                .catch((err) => {
-                    console.log(err);
-                })
-                .finally(() => {
-                    setInputs({});
-                    setActive(false)
-                    // router.refresh()
-                });
-        }
-    };
-
-    const handleChange = (e) => {
         const name = e.target.name;
         const value = e.target.value;
-        setInputs((prevState) => ({ ...prevState, [name]: value }));
+        setInputs((prevState) => ({ ...prevState, [name]: value}));
     };
-
-
-    const ratingChanged = (newRating) => {
-        setValues(newRating)
-    }
-
-
-
 
 
 
@@ -84,7 +48,7 @@ export default function Rate() {
             <div className="container-xl  custom-page-1 " style={{background: "#f4f4f4", maxWidth:"700px"}}>
                 <div>
                     <div className="pl-5 pt-4 pr-5">
-                        <form onSubmit={handleSubmit} style={{textAlign:"center"}}>
+                        <form action={async formData => { await sendEmail1(formData); }} style={{textAlign:"center"}}>
                             <div className="">
                                 <div className="">
                                     <div className="form-group row">
@@ -105,7 +69,7 @@ export default function Rate() {
                                         <div className="col-sm-12">
                                             <textarea
                                                 className="form-control form-control-text-area myTextt"
-                                                name="description"
+                                                name="message"
                                                 placeholder="Message"
                                                 rows={3}
                                                 required

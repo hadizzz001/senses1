@@ -1,12 +1,19 @@
 import { useEffect, useState } from "react";
-import { sendEmail } from '../app/api/sendEmail/sendEmail'
+import { sendEmail } from '../app/api/sendEmail/sendEmail';
 
 export default function OfferPopup() {
   const [offer, setOffer] = useState("");
   const [email, setEmail] = useState("");
-  const [isOpen, setIsOpen] = useState(true); // Show popup on load
+  const [isOpen, setIsOpen] = useState(false); // Default closed
 
   useEffect(() => {
+    if (window.location.hostname === "localhost") {
+      const hasSeenPopup = localStorage.getItem("hasSeenOfferPopup");
+      if (!hasSeenPopup) {
+        setIsOpen(true); // Show popup only if not seen before
+      }
+    }
+
     fetch("/api/offer")
       .then((res) => res.json())
       .then((data) => {
@@ -15,11 +22,16 @@ export default function OfferPopup() {
       .catch((err) => console.error("Error fetching offer:", err));
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleClose = () => {
+    setIsOpen(false);
+    localStorage.setItem("hasSeenOfferPopup", "true"); // Store flag
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert(`Email submitted: ${email}`);
-    setEmail(""); // Clear input field
-    setIsOpen(false); // Close popup
+    await sendEmail(new FormData(e.target));
+    setEmail("");
+    handleClose();
   };
 
   return isOpen ? (
@@ -43,14 +55,14 @@ export default function OfferPopup() {
           color: "white",
           padding: "50px",
           borderRadius: "12px",
-          width: "600px", 
+          width: "600px",
           textAlign: "center",
           position: "relative",
         }}
       >
         {/* Close Button */}
         <button
-          onClick={() => setIsOpen(false)}
+          onClick={handleClose}
           style={{
             position: "absolute",
             top: "15px",
@@ -67,7 +79,7 @@ export default function OfferPopup() {
             width="44"
             height="44"
           >
-            <rect width={44} height={44}  />
+            <rect width={44} height={44} />
             <path
               d="M7 17L16.8995 7.10051"
               stroke="#fff"
@@ -84,15 +96,22 @@ export default function OfferPopup() {
         </button>
 
         {/* Offer Text */}
-        <h2>{offer}</h2>
+        <h2>GET 10% OFF
+          YOUR FIRST
+          ORDER NOW!</h2>
+          <h6 className="mt-10"> 
+          Tell us where to send your exclusive code.
+          </h6>
 
         {/* Email Form */}
-        <form action={async formData => { await sendEmail(formData); }}>
+        <form onSubmit={handleSubmit}>
           <input
             type="email"
-            placeholder="Enter your email to get the code" 
+            placeholder="Email:"
             name="email"
             required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             style={{
               width: "100%",
               padding: "12px",
@@ -114,11 +133,12 @@ export default function OfferPopup() {
               cursor: "pointer",
               width: "50%",
               fontWeight: "bold",
-              fontSize: "16px",
+              fontSize: "26px",
             }}
           >
-            Get Code Now!
+            CLAIM MY CODE
           </button>
+          <p className="mt-10 font-bold cursor-pointer" onClick={handleClose}>No thanks, I will pay full price.</p>
         </form>
       </div>
     </div>
