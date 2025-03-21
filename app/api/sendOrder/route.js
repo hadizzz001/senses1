@@ -20,7 +20,7 @@ export async function POST(request) {
             userInfo: items,
             cartItems: inputs,
             total: total,
-            delivery: delivery,
+            delivery: delivery+"",
             code: code,
             date: formattedDate, // Added date field
         });
