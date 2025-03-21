@@ -16,8 +16,6 @@ const page = () => {
   const [localQuantities, setLocalQuantities] = useState(quantities);
   const [phone, setPhone] = useState("");
   const [isOpen, setIsOpen] = useState(false);
- 
-
 
   const [promoCode, setPromoCode] = useState("");
   const [promoCodes, setPromoCodes] = useState([]); // Store promo codes from API
@@ -62,6 +60,15 @@ const page = () => {
 
 
 
+
+
+
+
+
+
+
+
+
   useEffect(() => {
     // Fetch promo codes from API
     fetch("/api/offer")
@@ -74,10 +81,14 @@ const page = () => {
       setUsedAbcd1234(localStorage.getItem("usedAbcd1234") === "true");
     }
 
-    // Update total if subtotal is $100 (free delivery)
+    // Update delivery fee when subtotal changes
     setDeliveryFee(subtotal >= 100 ? 0 : 4);
-    setTotal((subtotal + (subtotal >= 100 ? 0 : 4)).toFixed(2));
   }, [subtotal]);
+
+  useEffect(() => {
+    // Update total whenever subtotal or delivery fee changes
+    setTotal((subtotal + deliveryFee).toFixed(2));
+  }, [subtotal, deliveryFee]);
 
   const applyPromo = (event) => {
     event.preventDefault(); // Prevent page reload
@@ -94,14 +105,13 @@ const page = () => {
     }
 
     if (promoCode.toLowerCase() === "freedelivery1" || subtotal >= 100) {
-      setDeliveryFee(0);
+      setDeliveryFee(0); // ✅ Delivery fee updates, triggering useEffect to update total
     }
 
     const promo = promoCodes.find((p) => p.code.toLowerCase() === promoCode.toLowerCase());
     if (promo) {
       const discount = promo.per / 100;
-      const newTotal = ((subtotal + deliveryFee) * (1 - discount)).toFixed(2);
-      setTotal(newTotal);
+      setTotal(((subtotal + deliveryFee) * (1 - discount)).toFixed(2)); // ✅ Uses latest state
       setDiscountApplied(true);
     } else {
       alert("Invalid promo code!");
@@ -271,6 +281,8 @@ const page = () => {
                             </tr>
                           ))}
                         </tbody>
+
+
 
                         {/* Promo Code Input */}
                         <div style={{
@@ -803,6 +815,8 @@ const page = () => {
 
 
 
+
+                                                {/* Promo Code Input */}
                                                 <div style={{
                                                   display: "flex",
                                                   alignItems: "center",
@@ -913,7 +927,7 @@ const page = () => {
 
 
                     {total !== null && (
-                      <WhatsAppButton inputs={inputs} items={cart} total={total} />
+                      <WhatsAppButton inputs={inputs} items={cart} total={total} delivery={deliveryFee} code={promoCode} />
                     )}
 
 

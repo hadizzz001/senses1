@@ -2,7 +2,7 @@
 import { useCart } from '../app/context/CartContext'; 
 import { useState } from 'react';
 
-const WhatsAppButton = ({ inputs, items, total }) => {
+const WhatsAppButton = ({ inputs, items, total, delivery, code }) => {
     const { cart, removeFromCart, updateQuantity, clearCart, isModalOpen, toggleModal ,subtotal} = useCart();
     const [error, setError] = useState(null);
 
@@ -55,6 +55,9 @@ const WhatsAppButton = ({ inputs, items, total }) => {
                     items,
                     inputs,
                     total,
+                    delivery,
+                    code,
+
                 }),
             });
     
@@ -79,7 +82,7 @@ const WhatsAppButton = ({ inputs, items, total }) => {
             return;
         }
 
-        const url = createWhatsAppURL(inputs, items , total);
+        const url = createWhatsAppURL(inputs, items , total, delivery, code);
         window.open(url, '_blank');
         createOrder();
         clearCart();
@@ -105,13 +108,12 @@ const WhatsAppButton = ({ inputs, items, total }) => {
 
 export default WhatsAppButton;
 
-const createWhatsAppURL = (inputs, items, total) => { 
+const createWhatsAppURL = (inputs, items, total, delivery, code) => { 
     const { address, fname, lname, phone , email} = inputs;
 
     // Calculate the total amount
     const totalAmount = items.reduce((sum, item) => sum + item.discount * item.quantity, 0);
-
-    console.log("totalAmount=", total);
+ 
     
 
     // Formatting the message
@@ -132,7 +134,7 @@ const createWhatsAppURL = (inputs, items, total) => {
     `).join('\n')}
 
     Subtotal: $${totalAmount.toFixed(2)}
-    Delivery fee: $4.00
+    Delivery fee: $${delivery}
     *Total Amount:* $${total}
   `;
 
