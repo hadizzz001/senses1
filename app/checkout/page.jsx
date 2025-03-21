@@ -16,10 +16,12 @@ const page = () => {
   const [localQuantities, setLocalQuantities] = useState(quantities);
   const [phone, setPhone] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+ 
+
 
   const [promoCode, setPromoCode] = useState("");
   const [promoCodes, setPromoCodes] = useState([]); // Store promo codes from API
-  const [usedAbcd1234, setUsedAbcd1234] = useState(localStorage.getItem("usedAbcd1234") === "true"); // Track if "abcd1234" is used
+  const [usedAbcd1234, setUsedAbcd1234] = useState(false); // Track if "abcd1234" is used
   const [discountApplied, setDiscountApplied] = useState(false);
   const [deliveryFee, setDeliveryFee] = useState(subtotal >= 100 ? 0 : 4);
   const [total, setTotal] = useState((subtotal + deliveryFee).toFixed(2));
@@ -67,8 +69,10 @@ const page = () => {
       .then((data) => setPromoCodes(data)) // Expecting [{ code: "ABC123", per: 10 }, { code: "XYZ789", per: 20 }]
       .catch((error) => console.error("Error fetching promo codes:", error));
 
-    // Check if "abcd1234" has been used
-    setUsedAbcd1234(localStorage.getItem("usedAbcd1234") === "true");
+    // Ensure localStorage is available (client-side)
+    if (typeof window !== "undefined") {
+      setUsedAbcd1234(localStorage.getItem("usedAbcd1234") === "true");
+    }
 
     // Update total if subtotal is $100 (free delivery)
     setDeliveryFee(subtotal >= 100 ? 0 : 4);
@@ -83,7 +87,9 @@ const page = () => {
         alert("You have already used this promo code.");
         return;
       }
-      localStorage.setItem("usedAbcd1234", "true");
+      if (typeof window !== "undefined") {
+        localStorage.setItem("usedAbcd1234", "true");
+      }
       setUsedAbcd1234(true);
     }
 
