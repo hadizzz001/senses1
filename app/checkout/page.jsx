@@ -19,7 +19,7 @@ const page = () => {
 
   const [promoCode, setPromoCode] = useState("");
   const [promoCodes, setPromoCodes] = useState([]); // Store promo codes from API
-  const [usedAbcd1234, setUsedAbcd1234] = useState(false); // Track if "abcd1234" is used
+  const [usedAbcd1234, setUsedAbcd1234] = useState(false);
   const [discountApplied, setDiscountApplied] = useState(false);
   const [deliveryFee, setDeliveryFee] = useState(subtotal >= 100 ? 0 : 4);
   const [total, setTotal] = useState((subtotal + deliveryFee).toFixed(2));
@@ -78,7 +78,11 @@ const page = () => {
 
     // Ensure localStorage is available (client-side)
     if (typeof window !== "undefined") {
-      setUsedAbcd1234(localStorage.getItem("usedAbcd1234") === "true");
+      // Initialize usedAbcd1234 from localStorage
+      const storedUsedAbcd1234 = localStorage.getItem("usedAbcd1234");
+      if (storedUsedAbcd1234 === "true") {
+        setUsedAbcd1234(true);
+      }
     }
 
     // Update delivery fee when subtotal changes
@@ -93,21 +97,29 @@ const page = () => {
   const applyPromo = (event) => {
     event.preventDefault(); // Prevent page reload
 
+    // If the promo code is "abcd1234", apply a 10% discount
     if (promoCode.toLowerCase() === "abcd1234") {
       if (usedAbcd1234) {
         alert("You have already used this promo code.");
         return;
       }
-      if (typeof window !== "undefined") {
-        localStorage.setItem("usedAbcd1234", "true");
-      }
+      // Apply 10% discount and mark the promo code as used
+      const discountedTotal = ((subtotal + deliveryFee) * 0.9).toFixed(2);
+      setTotal(discountedTotal);
       setUsedAbcd1234(true);
+      if (typeof window !== "undefined") {
+        localStorage.setItem("usedAbcd1234", "true"); // Store that the promo code was used
+      }
+      setDiscountApplied(true); // Mark discount as applied
+      return; // Prevent further code checks if the promo is applied
     }
 
+    // Check for free delivery promo code or subtotal >= 100
     if (promoCode.toLowerCase() === "freedelivery1" || subtotal >= 100) {
       setDeliveryFee(0); // ✅ Delivery fee updates, triggering useEffect to update total
     }
 
+    // Find the promo code from the API response
     const promo = promoCodes.find((p) => p.code.toLowerCase() === promoCode.toLowerCase());
     if (promo) {
       const discount = promo.per / 100;
@@ -117,8 +129,6 @@ const page = () => {
       alert("Invalid promo code!");
     }
   };
-
-
 
 
 
@@ -313,11 +323,12 @@ const page = () => {
                               color: "#fff",
                               border: "none",
                               borderRadius: "4px",
-                              cursor: "pointer",
-                              background: "#222"
+                              cursor: discountApplied ? "not-allowed" : "pointer",
+                              background: discountApplied ? "green" : "#222",
                             }}
+                            disabled={discountApplied} // Disable button when discount is applied
                           >
-                            Apply
+                            {discountApplied ? "Done!" : "Apply"} {/* Show "Done!" when discount is applied */}
                           </button>
                         </div>
 
@@ -845,11 +856,12 @@ const page = () => {
                                                       color: "#fff",
                                                       border: "none",
                                                       borderRadius: "4px",
-                                                      cursor: "pointer",
-                                                      background: "#222"
+                                                      cursor: discountApplied ? "not-allowed" : "pointer",
+                                                      background: discountApplied ? "green" : "#222",
                                                     }}
+                                                    disabled={discountApplied} // Disable button when discount is applied
                                                   >
-                                                    Apply
+                                                    {discountApplied ? "Done!" : "Apply"} {/* Show "Done!" when discount is applied */}
                                                   </button>
                                                 </div>
 

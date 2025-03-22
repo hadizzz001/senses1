@@ -7,13 +7,13 @@ export default function OfferPopup() {
   const [isOpen, setIsOpen] = useState(false); // Default closed
 
   useEffect(() => {
-    if (window.location.hostname === "localhost") {
+    if (window.location.hostname === "localhost" || window.location.hostname === "senses1.netlify.app" || window.location.hostname === "sensesbynature.com") {
       const hasSeenPopup = localStorage.getItem("hasSeenOfferPopup");
       if (!hasSeenPopup) {
         setIsOpen(true); // Show popup only if not seen before
       }
     }
-
+  
     fetch("/api/offer")
       .then((res) => res.json())
       .then((data) => {
@@ -21,6 +21,7 @@ export default function OfferPopup() {
       })
       .catch((err) => console.error("Error fetching offer:", err));
   }, []);
+  
 
   const handleClose = () => {
     setIsOpen(false);
