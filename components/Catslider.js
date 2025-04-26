@@ -2,18 +2,18 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 
 const ResponsiveVideo = () => {
   const [categories, setCategories] = useState([]);
   const router = useRouter();
 
-  // Fetch categories from API and filter only the first 3
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const response = await fetch("/api/category");
         const data = await response.json();
-        setCategories(data.slice(0, 3)); // Take only first 3 categories
+        setCategories(data.slice(0, 3));
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
@@ -22,7 +22,6 @@ const ResponsiveVideo = () => {
     fetchCategories();
   }, []);
 
-  // Function to render either video or image
   const renderMedia = (category) => {
     if (category.img[0].endsWith(".mp4")) {
       return (
@@ -39,25 +38,46 @@ const ResponsiveVideo = () => {
     <>
       <h1 className="uppercase text-center myBB">Our Collections</h1>
       <div className="odd-container">
-        {/* Left Side - First Category */}
         {categories.length > 0 && (
-          <div id="vid-jump">
+          <motion.div
+            id="vid-jump"
+            initial={{ scale: 0.9, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 2 }}
+            viewport={{ once: true }}
+          >
             {renderMedia(categories[0])}
             <h3 className="pic-tagline" style={{ bottom: "15%" }}>
               {categories[0].name}
             </h3>
-            <button onClick={() => router.push("/search?cat="+categories[0].name)} className="pic-button-splash">Shop Now</button>
-          </div>
+            <button
+              onClick={() => router.push("/search?cat=" + categories[0].name)}
+              className="pic-button-splash"
+            >
+              Shop Now
+            </button>
+          </motion.div>
         )}
 
-        {/* Right Side - Remaining Two Categories */}
         <div id="pic-portal">
           {categories.slice(1).map((category, index) => (
-            <div key={index} className="pic-dream">
+            <motion.div
+              key={index}
+              className="pic-dream"
+              initial={{ scale: 0.9, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 2 }}
+              viewport={{ once: true }}
+            >
               {renderMedia(category)}
               <h3 className="pic-tagline">{category.name}</h3>
-              <button onClick={() => router.push("/search?cat="+category.name)} className="pic-button-splash">Shop Now</button>
-            </div>
+              <button
+                onClick={() => router.push("/search?cat=" + category.name)}
+                className="pic-button-splash"
+              >
+                Shop Now
+              </button>
+            </motion.div>
           ))}
         </div>
       </div>

@@ -8,7 +8,7 @@ export default function OfferHeadline() {
   return (
     <div
       style={{
-        backgroundColor: "black",
+        backgroundColor: "#8ea976",
         color: "white",
         fontSize: "14px",
         padding: "5px 0",
@@ -27,12 +27,12 @@ export default function OfferHeadline() {
       >
         <SwiperSlide>
           <div style={{ textAlign: "center" }}>
-            Delivery to whole Lebanon!
+            Worldwide shipping!
           </div>
         </SwiperSlide>
         <SwiperSlide>
           <div style={{ textAlign: "center" }}>
-            Free Shipping on all orders above $100
+            Free Shipping on all orders above $50
           </div>
         </SwiperSlide>
       </Swiper>

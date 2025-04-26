@@ -11,6 +11,11 @@ import { BooleanProvider } from './context/CartBoolContext';
 import GifLoader from '../components/GifLoader'
 import Offer from '../components/Offer'
 import WhatsAppIcon from '../components/WhatsAppIcon'; 
+import ScrollToTop  from '../components/ScrollToTop'; 
+import { GoogleAnalytics } from '@next/third-parties/google'
+
+
+
 
  
 
@@ -130,6 +135,7 @@ export default function RootLayout({
 
       <body>
 
+      <ScrollToTop />
       <Offer /> 
       <GifLoader />
 
@@ -138,6 +144,7 @@ export default function RootLayout({
         <CartProvider>
           <Navbar2 />
           <WhatsAppIcon />
+          <GoogleAnalytics gaId="G-CWL3GHDNXG" />
           {children} 
           <Footer />
         </CartProvider>
