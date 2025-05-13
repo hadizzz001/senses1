@@ -7,6 +7,7 @@ import { useSearchParams } from 'next/navigation';
 import { useCart } from '../context/CartContext';
 import { useBooleanValue } from '../context/CartBoolContext';
 import QuantitySelector from '../../components/QuantitySelector';
+import OutOfStockComponent from '../../components/OutOfStockComponent';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
@@ -290,7 +291,10 @@ const Page = () => {
                                     <span>ADD TO BAG</span>
                                   </button>
                                 ) : (
-                                  <p className='mt-10' style={{ color: "#222", fontSize: "24px" }}>Out of Stock</p>
+                                  <> 
+                                  <OutOfStockComponent itemName={title} /> 
+                                  </>
+                                 
                                 )}
                               </span>
                             </div>

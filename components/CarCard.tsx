@@ -8,7 +8,7 @@ interface CarCardProps {
 }
 
 const CarCard = ({ temp }: CarCardProps) => {
-    const { _id, title, price, discount, img, category } = temp;
+    const { _id, title, price, discount, img, category, stock } = temp;
 
     return (
         <a href={`/product?id=${_id}`} >
@@ -20,28 +20,37 @@ const CarCard = ({ temp }: CarCardProps) => {
                                 <div className="initial:br_row-span-1 br_col-start-1 br_row-start-1 br_relative">
                                     <div className="br_aspect-[1/1] sm:br_aspect-square">
                                         <div className="br_w-full br_h-full br_relative br_flex br_items-center br_justify-center">
-                                            <div className="w-[300px] h-[350px] relative rounded-[20px] overflow-hidden">
-                                                {/* Default Image */}
-                                                <motion.img
-                                                    src={img[0]}
-                                                    className="absolute w-full h-full object-cover"
-                                                    style={{ borderRadius: "20px" }}
-                                                    initial={{ opacity: 1 }}
-                                                    whileHover={{ opacity: 0 }}
-                                                    whileTap={{ opacity: 0 }}
-                                                    transition={{ duration: 0.5 }}
-                                                />
-                                                {/* Hover Image */}
-                                                <motion.img
-                                                    src={img[1]}
-                                                    className="absolute w-full h-full object-cover"
-                                                    style={{ borderRadius: "20px" }}
-                                                    initial={{ opacity: 0 }}
-                                                    whileHover={{ opacity: 1 }}
-                                                    whileTap={{ opacity: 1 }}
-                                                    transition={{ duration: 0.5 }}
-                                                />
-                                            </div>
+                                            <div className="w-[300px] h-[350px] relative rounded-[20px] overflow-hidden group">
+ 
+{parseInt(stock) === 0 && (
+    <div className="absolute inset-0 bg-gray-600 bg-opacity-70 text-white flex items-center justify-center text-lg font-bold z-10">
+      Out of Stock
+    </div>
+  )}
+
+  {/* Default Image */}
+  <motion.img
+    src={img[0]}
+    className="absolute w-full h-full object-cover group-hover:opacity-0"
+    style={{ borderRadius: "20px" }}
+    initial={{ opacity: 1 }}
+    whileHover={{ opacity: 0 }}
+    whileTap={{ opacity: 0 }}
+    transition={{ duration: 0.5 }}
+  />
+
+  {/* Hover Image */}
+  <motion.img
+    src={img[1]}
+    className="absolute w-full h-full object-cover"
+    style={{ borderRadius: "20px" }}
+    initial={{ opacity: 0 }}
+    whileHover={{ opacity: 1 }}
+    whileTap={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
+  />
+</div>
+
                                         </div>
 
                                     </div>

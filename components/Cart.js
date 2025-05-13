@@ -166,7 +166,7 @@ const Cart = () => {
                                                             value={localQuantities[obj._id] || 1}
                                                             onChange={(e) => handleQuantityChange(obj._id, e.target.value)}
                                                             min="1"
-                                                            max={maxStock[obj._id] || 1} 
+                                                            max={maxStock[obj._id] || 1}
                                                         />
 
 
@@ -225,7 +225,11 @@ const Cart = () => {
                                 </div>
                             </div>
 
-                            <div className="ProductTile-SliderContainer ProductTile-SliderContainer--YMAL" data-product-list-category="ymal-slider">
+                            <a className="Common_Button Common_Button--short MiniCart_Cart_CtaButton" href="/checkout" rel="nofollow">
+                                <span>Go to checkout</span>
+                            </a>
+
+                            <div className="mt-10 ProductTile-SliderContainer ProductTile-SliderContainer--YMAL" data-product-list-category="ymal-slider">
                                 <div className="ProductTile-SliderContainer-Title br_text-3xl-serif br_text-white myNewC">You might also like:</div>
                                 {allTemp2 && allTemp2?.length > 0 ? (
                                     <section style={{ maxWidth: "100%" }}>
@@ -257,9 +261,7 @@ const Cart = () => {
 
                         </div>
 
-                        <a className="Common_Button Common_Button--short MiniCart_Cart_CtaButton" href="/checkout" rel="nofollow">
-                            <span>Go to checkout</span>
-                        </a>
+
                     </div>
                 </div>
             </div>

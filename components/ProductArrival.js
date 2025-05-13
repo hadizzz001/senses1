@@ -72,25 +72,29 @@ const YourComponent = () => {
 
                                 {allTemps.length > 0 ? (
                                     <section className=' mb-5' style={{ maxWidth: "100%" }}>
-                                        <Swiper
-                                            spaceBetween={20}
-
-                                            loop breakpoints={{
-                                                150: {
-                                                    slidesPerView: 2,
-                                                },
-                                                768: {
-                                                    slidesPerView: 4,
-                                                },
-                                            }}>
-                                            <div className="home__cars-wrapper">
-                                                {allTemps.map((temp) => (
-                                                    <SwiperSlide key={temp.id}>
-                                                        <CarCard temp={temp} />
-                                                    </SwiperSlide>
-                                                ))}
-                                            </div>
-                                        </Swiper>
+<Swiper
+  modules={[Autoplay]} // Include Autoplay module
+  spaceBetween={20}
+  loop={true} // Enable looping
+  autoplay={{
+    delay: 2000, // 2 seconds delay
+    disableOnInteraction: false, // Keeps autoplay even after interaction
+  }}
+  breakpoints={{
+    150: {
+      slidesPerView: 2,
+    },
+    768: {
+      slidesPerView: 4,
+    },
+  }}
+>
+  {allTemps.map((temp) => (
+    <SwiperSlide key={temp.id}>
+      <CarCard temp={temp} />
+    </SwiperSlide>
+  ))}
+</Swiper>
                                     </section>
 
 

@@ -78,7 +78,7 @@ const WhatsAppButton = ({ inputs, items, total, delivery, code }) => {
 
     const handleClick = async () => {
         if (!validateInputs(inputs)) {
-            setError('All fields are required.');
+            setError('All fields are required and on the right format.');
             return;
         }
 
@@ -89,14 +89,25 @@ const WhatsAppButton = ({ inputs, items, total, delivery, code }) => {
         setError(null);
     };
 
-    const validateInputs = (inputs) => {
-        const { address, fname, lname, phone, email } = inputs;
-        return address && fname && lname && phone && email;
-    };
+const validateInputs = (inputs) => {
+  const { address, fname, lname, phone, email } = inputs;
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  return (
+    address &&
+    fname &&
+    lname &&
+    phone &&
+    email &&
+    emailRegex.test(email)
+  );
+};
+
 
     return (
         <div className='container'>
-            {error && <div style={{ color: 'red' }}>{error}</div>}
+            {error && <div className='myBB3'>{error}</div>}
             <span className="ProvidersSingleProduct--selected">
                 <button onClick={handleClick} type="button" className="AddToCart HtmlProductAddToCart" style={{ borderRadius: "0" }}  >
                     <span>Order Now!</span>

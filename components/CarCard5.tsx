@@ -8,7 +8,7 @@ interface CarCardProps {
 }
 
 const CarCard5 = ({ temp }: CarCardProps) => {
-    const { _id, title, price, discount, img, category } = temp;
+    const { _id, title, price, discount, img, category, stock } = temp;
     const [isTouched, setIsTouched] = useState(false);
 
     const handleTouchStart = () => {
@@ -33,6 +33,12 @@ const CarCard5 = ({ temp }: CarCardProps) => {
                                             onTouchStart={handleTouchStart} 
                                             onTouchEnd={handleTouchEnd}
                                         >
+                                             
+{parseInt(stock) === 0 && (
+    <div className="absolute inset-0 bg-gray-600 bg-opacity-70 text-white flex items-center justify-center text-lg font-bold z-10">
+      Out of Stock
+    </div>
+  )}
                                             {/* Default Image */}
                                             <img
                                                 src={img[0]}

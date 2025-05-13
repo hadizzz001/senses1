@@ -297,6 +297,11 @@ const Body = () => {
               onTouchStart={() => handleTouchStart(index)}
               onTouchEnd={handleTouchEnd}
             >
+                {parseInt(item.stock) === 0 && (
+    <div className="absolute inset-0 bg-gray-600 bg-opacity-70 text-white flex items-center justify-center text-lg font-bold z-10">
+      Out of Stock
+    </div>
+  )}
               {/* Default Image */}
               <img className="default-img" src={item.img[0]} alt="Default" />
 

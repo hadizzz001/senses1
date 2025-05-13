@@ -19,6 +19,7 @@ export const sendEmail = async (formData: FormData) => {
             subject: "New message from your website customer",
             text: "Name: " + firstname + " " + lastname + "\nEmail:" + email + "\nPhone:" + phone + "\n" + message,
         })
+        redirect('/thank');
     } else {
         resend.emails.send({
             from: "info@anazon.hadizproductions.com",
@@ -27,7 +28,7 @@ export const sendEmail = async (formData: FormData) => {
             text: "Thanks you for subscribing with Senses your code is: Abcd12345",
         })
     }
-    redirect('/thank');
+    
 
 }
 

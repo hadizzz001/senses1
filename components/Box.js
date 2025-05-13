@@ -4,16 +4,22 @@ import { sendEmail } from '../app/api/sendEmail/sendEmail';
 export default function OfferPopup() {
   const [offer, setOffer] = useState("");
   const [email, setEmail] = useState("");
-  const [isOpen, setIsOpen] = useState(false); // Default closed
+  const [isOpen, setIsOpen] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [copied, setCopied] = useState(false); // 🔥 Copy state
 
   useEffect(() => {
-    if (window.location.hostname === "localhost" || window.location.hostname === "senses1.netlify.app" || window.location.hostname === "sensesbynature.com") {
+    if (
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "senses1.netlify.app" ||
+      window.location.hostname === "sensesbynature.com"
+    ) {
       const hasSeenPopup = localStorage.getItem("hasSeenOfferPopup");
       if (!hasSeenPopup) {
-        setIsOpen(true); // Show popup only if not seen before
+        setIsOpen(true);
       }
     }
-  
+
     fetch("/api/offer")
       .then((res) => res.json())
       .then((data) => {
@@ -21,18 +27,24 @@ export default function OfferPopup() {
       })
       .catch((err) => console.error("Error fetching offer:", err));
   }, []);
-  
 
   const handleClose = () => {
     setIsOpen(false);
-    localStorage.setItem("hasSeenOfferPopup", "true"); // Store flag
+    localStorage.setItem("hasSeenOfferPopup", "true");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     await sendEmail(new FormData(e.target));
+    setIsSubmitted(true);
     setEmail("");
-    handleClose();
+    localStorage.setItem("hasSeenOfferPopup", "true");
+  };
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText("Abcd12345");
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000); // Reset after 2s
   };
 
   return isOpen ? (
@@ -52,7 +64,7 @@ export default function OfferPopup() {
     >
       <div
         style={{
-          backgroundColor: "rgba(13, 13, 13, 0.8)",
+          backgroundColor: "rgba(13, 13, 13, 0.9)",
           color: "white",
           padding: "50px",
           borderRadius: "12px",
@@ -96,51 +108,95 @@ export default function OfferPopup() {
           </svg>
         </button>
 
-        {/* Offer Text */}
-        <h2>GET 10% OFF
-          YOUR FIRST
-          ORDER NOW!</h2>
-          <h6 className="mt-10"> 
-          Tell us where to send your exclusive code.
-          </h6>
+        {/* Header */}
+        <h2>GET 10% OFF YOUR FIRST ORDER NOW!</h2>
 
-        {/* Email Form */}
-        <form onSubmit={handleSubmit}>
-          <input
-            type="email"
-            placeholder="Email:"
-            name="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            style={{
-              width: "100%",
-              padding: "12px",
-              marginTop: "25px",
-              borderRadius: "6px",
-              border: "none",
-              color: "#222",
-            }}
-          />
-          <button
-            type="submit"
-            style={{
-              marginTop: "25px",
-              backgroundColor: "#8ea976",
-              color: "white",
-              padding: "12px",
-              borderRadius: "6px",
-              border: "none",
-              cursor: "pointer",
-              width: "50%",
-              fontWeight: "bold",
-              fontSize: "26px",
-            }}
-          >
-            CLAIM MY CODE
-          </button>
-          <p className="mt-10 font-bold cursor-pointer" onClick={handleClose}>No thanks, I will pay full price.</p>
-        </form>
+        {!isSubmitted ? (
+          <>
+            <h6 className="mt-10">Tell us where to send your exclusive code.</h6>
+            <form onSubmit={handleSubmit}>
+              <input
+                type="email"
+                placeholder="Email:"
+                name="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                style={{
+                  width: "100%",
+                  padding: "12px",
+                  marginTop: "25px",
+                  borderRadius: "6px",
+                  border: "none",
+                  color: "#222",
+                }}
+              />
+              <button
+                type="submit"
+                style={{
+                  marginTop: "25px",
+                  backgroundColor: "#8ea976",
+                  color: "white",
+                  padding: "12px",
+                  borderRadius: "6px",
+                  border: "none",
+                  cursor: "pointer",
+                  width: "50%",
+                  fontWeight: "bold",
+                  fontSize: "26px",
+                }}
+              >
+                CLAIM MY CODE
+              </button>
+              <p className="mt-10 font-bold cursor-pointer" onClick={handleClose}>
+                No thanks, I will pay full price.
+              </p>
+            </form>
+          </>
+        ) : (
+          <>
+            <h3 style={{ marginTop: "30px", color: "#c5e1a5" }}>🎉 Thank you!</h3>
+            <p style={{ fontSize: "18px", marginTop: "15px" }}>
+              Here is your exclusive discount code:
+            </p>
+            <div
+              style={{
+                marginTop: "20px",
+                background: "#fff",
+                color: "#222",
+                fontSize: "20px",
+                fontWeight: "bold",
+                padding: "10px",
+                borderRadius: "8px",
+                display: "inline-block",
+                position: "relative",
+              }}
+              className="myBB"
+            >
+              { "Abcd12345"}
+              {/* 🔥 Copy Button */}
+              <button
+                onClick={handleCopy}
+                style={{
+                  marginLeft: "10px",
+                  padding: "6px 10px",
+                  fontSize: "14px",
+                  fontWeight: "bold",
+                  borderRadius: "5px",
+                  border: "none",
+                  cursor: "pointer",
+                  backgroundColor: "#8ea976",
+                  color: "#fff",
+                }}
+              >
+                {copied ? "Copied!" : "Copy"}
+              </button>
+            </div>
+            <p style={{ marginTop: "20px", fontSize: "16px" }}>
+              Use it at checkout to save 10% on your first order!
+            </p>
+          </>
+        )}
       </div>
     </div>
   ) : null;

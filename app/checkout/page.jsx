@@ -551,7 +551,7 @@ const page = () => {
                                             </label>
                                             <span className="woocommerce-input-wrapper">
                                               <input
-                                                type="text"
+                                                type="email"
                                                 className="input-text wfacp-form-control"
                                                 name="billing_email"
                                                 id="billing_email"
